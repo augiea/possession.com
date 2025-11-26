@@ -1,0 +1,489 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Possession.com - Host Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4a0080 0%, #6a00a0 100%);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #8a2be2;
+        }
+
+        h1 {
+            color: #e0b3ff;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+        }
+
+        .tagline {
+            color: #c0c0c0;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .gallery {
+            margin-bottom: 40px;
+        }
+
+        .gallery h2 {
+            color: #e0b3ff;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8a2be2;
+            padding-bottom: 10px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #2a2a4a 0%, #3a3a5a 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #6a00a0;
+            transition: all 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+        }
+
+        .gallery-placeholder {
+            color: #8a8a8a;
+            text-align: center;
+        }
+
+        .profile-section {
+            margin-bottom: 40px;
+            background: rgba(40, 40, 60, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #6a00a0;
+        }
+
+        .profile-section h2 {
+            color: #e0b3ff;
+            margin-bottom: 20px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-item {
+            padding: 15px;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 8px;
+            border-left: 3px solid #8a2be2;
+        }
+
+        .profile-label {
+            color: #b08fd1;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-value {
+            color: #e0e0e0;
+        }
+
+        .reviews-section {
+            margin-bottom: 40px;
+        }
+
+        .review {
+            background: rgba(40, 40, 60, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #8a2be2;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .review-user {
+            color: #b08fd1;
+            font-weight: bold;
+        }
+
+        .review-rating {
+            color: #ffd700;
+        }
+
+        .review-text {
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+
+        .options-section {
+            background: rgba(40, 40, 60, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #8a2be2;
+        }
+
+        .option-group {
+            margin-bottom: 25px;
+        }
+
+        .option-group label {
+            display: block;
+            color: #b08fd1;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(30, 30, 50, 0.9);
+            border: 1px solid #6a00a0;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .price-info {
+            color: #90ee90;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .total-cost {
+            background: rgba(60, 60, 80, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .total-cost h3 {
+            color: #e0b3ff;
+            margin-bottom: 10px;
+        }
+
+        .total-amount {
+            font-size: 2em;
+            color: #90ee90;
+            font-weight: bold;
+        }
+
+        .possess-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .possess-button:hover {
+            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .possess-button:active {
+            transform: translateY(0);
+        }
+
+        .warning {
+            background: rgba(139, 0, 0, 0.3);
+            border: 1px solid #8b0000;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #ffb3b3;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>👻 Possession.com</h1>
+            <p class="tagline">Experience Life Through Another's Eyes</p>
+        </header>
+
+        <div class="content">
+            <!-- Gallery Section -->
+            <div class="gallery">
+                <h2>📸 Host Gallery</h2>
+                <div class="gallery-grid">
+<div class="gallery-item">
+                        <!-- REPLACE WITH YOUR IMAGE: Change the src URL below -->
+                        <img src="https://cdni.pornpics.com/1280/7/60/62171925/62171925_002_539e.jpg" alt="Host Photo 3">
+                    </div>
+                    <div class="gallery-item">
+                        <!-- REPLACE WITH YOUR IMAGE: Change the src URL below -->
+                        <img src="https://www.mypornstarbook.net/pornstars/b/bridgette_b/gallery174/images/01.jpg" alt="Host Photo 1">
+                    </div>
+                    <div class="gallery-item">
+                        <!-- REPLACE WITH YOUR IMAGE: Change the src URL below -->
+                        <img src="https://thumbs.freeones.com/photo/fz0ZlcOs0eC_-axpw6IJ/1440x0/filters:upscale():quality(85)/oF/YR/aoSyJ4RcHnHPbtkfaV/9af92a11-8698-41c8-99ec-babb39fd209a.jpg" alt="Host Photo 2">
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <h2>📋 Host Profile</h2>
+                <div class="profile-grid">
+                    <div class="profile-item">
+                        <span class="profile-label">Name:</span>
+                        <span class="profile-value">Maria Ana Martinez-Rios</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Age:</span>
+                        <span class="profile-value">35 Years</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Height:</span>
+                        <span class="profile-value">5'5"</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Breast Size:</span>
+                        <span class="profile-value">36 DDD</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Occupation:</span>
+                        <span class="profile-value">Spanish Teacher at Two Rivers High School</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Relationship Status:</span>
+                        <span class="profile-value">Married (husband travels frequently)</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Sexual History:</span>
+                        <span class="profile-value">3 partners, all male</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Wealth:</span>
+                        <span class="profile-value">Comfortable</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Personality:</span>
+                        <span class="profile-value">Traditional belief system. Strict rule follower. Enjoys holding power over her students.</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Libido:</span>
+                        <span class="profile-value">High. Masturbates regularly when husband is away.</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Responsiveness:</span>
+                        <span class="profile-value">Moderate. Prefers penetration to clitoral stimulation but can orgasm from both.</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Skills included with Memory Package:</span>
+                        <span class="profile-value">Spanish (native level fluency)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="reviews-section profile-section">
+                <h2>⭐ User Reviews</h2>
+                
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-user">SpectralWanderer_42</span>
+                        <span class="review-rating">★★★★★ 5/5</span>
+                    </div>
+                    <div class="review-text">
+                        <em>Maria&#39;s body is amazing and well worth the high price tag. I took her over while she was teaching one of her classes and put the nerdiest looking kid in charge. I walked over to the teacher&#39;s only bathroom and immediately took off her shirt and bra. Her tits are immaculate. A handful would be an understatement. Best 30 minutes of my life!!</em>
+                    </div>
+                </div>
+
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-user">GhostlyGamer99</span>
+                        <span class="review-rating">★★★★☆ 4/5</span>
+                    </div>
+                    <div class="review-text">
+                       <em>Being Señora Martinez was fucking crazy. I mean, I stared at her tits all year and needed to play with them just once before graduation. I fingered myself to some crazy orgasms but it wasn&#39;t enough. Señora Martinez&#39;s body made me super cock hungry! I had to buy an extra day so her husband could come back and fuck me senseless. He thought it was so unlike her when I told him to fuck me in her classroom. How would he have known one of her students was wearing her like a puppet! Recording attached ;)</em>
+                    </div>
+                </div>
+
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-user">EtherealExplorer</span>
+                        <span class="review-rating">★★★★★ 5/5</span>
+                    </div>
+                    <div class="review-text">
+                        <em>I decided to spend a week in the body of a local MILF. Maria&#39;s body totally fits the bill. Huge knockers and a face that screams &quot;Fuck me&quot;. It was a joke how easy it was to pick up guys from the bar. &quot;The memories package is absolutely necessary for longer stays. I don&#39;t know a lick of Spanish but I taught her class like it was nothing. Plus, I instantly knew how to put on a bra and find my G-Spot. Definitely worth the upcharge.</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Possession Options -->
+            <div class="options-section">
+                <h2>🎯 Possession Options</h2>
+                
+                <div class="option-group">
+                    <label for="duration">Duration:</label>
+                    <select id="duration">
+                        <option value="1">1 Hour - $299</option>
+                        <option value="4">4 Hours - $899</option>
+                        <option value="24">24 Hours - $2,499</option>
+                        <option value="168">1 Week - $9,999</option>
+                        <option value="720">1 Month - $29,999</option>
+                    </select>
+                </div>
+
+                <div class="option-group">
+                    <label for="time">Preferred Start Time:</label>
+                    <select id="time">
+                        <option value="morning">Morning (6AM-12PM)</option>
+                        <option value="afternoon">Afternoon (12PM-6PM)</option>
+                        <option value="evening">Evening (6PM-12AM)</option>
+                        <option value="night">Night (12AM-6AM)</option>
+                    </select>
+                </div>
+
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="memories">
+                        <label for="memories">Include Full Memory Package (+$1,500)</label>
+                    </div>
+                    <p class="price-info">Access to complete memories, skills, and personality nuances</p>
+                </div>
+
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="insurance">
+                        <label for="insurance">Possession Insurance (+$499)</label>
+                    </div>
+                    <p class="price-info">Protection against unexpected host resistance or early termination</p>
+                </div>
+
+                <div class="total-cost">
+                    <h3>Total Cost:</h3>
+                    <div class="total-amount" id="totalCost">$299</div>
+                </div>
+
+                <button class="possess-button" onclick="initiateSession()">
+                    👻 INITIATE POSSESSION
+                </button>
+
+                <div class="warning">
+                    ⚠️ Warning: All possessions are subject to our Terms of Service. Host consciousness will be temporarily suspended. Any actions taken during possession are the responsibility of the possessing entity. Memories created during possession will be retained by the host upon session completion.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prices = {
+            duration: {
+                '1': 299,
+                '4': 899,
+                '24': 2499,
+                '168': 9999,
+                '720': 29999
+            },
+            memories: 1500,
+            insurance: 499
+        };
+
+        function updateTotal() {
+            const duration = document.getElementById('duration').value;
+            const memories = document.getElementById('memories').checked;
+            const insurance = document.getElementById('insurance').checked;
+
+            let total = prices.duration[duration];
+            if (memories) total += prices.memories;
+            if (insurance) total += prices.insurance;
+
+            document.getElementById('totalCost').textContent = '$' + total.toLocaleString();
+        }
+
+        document.getElementById('duration').addEventListener('change', updateTotal);
+        document.getElementById('memories').addEventListener('change', updateTotal);
+        document.getElementById('insurance').addEventListener('change', updateTotal);
+
+        function initiateSession() {
+            const duration = document.getElementById('duration').value;
+            const time = document.getElementById('time').value;
+            const memories = document.getElementById('memories').checked;
+            const insurance = document.getElementById('insurance').checked;
+
+            alert('🌀 Initiating possession sequence...\n\n' +
+                  'Duration: ' + document.getElementById('duration').options[document.getElementById('duration').selectedIndex].text + '\n' +
+                  'Start Time: ' + time.charAt(0).toUpperCase() + time.slice(1) + '\n' +
+                  'Memory Package: ' + (memories ? 'YES' : 'NO') + '\n' +
+                  'Insurance: ' + (insurance ? 'YES' : 'NO') + '\n\n' +
+                  'Connecting to host consciousness...\n' +
+                  'Please prepare for transfer.');
+        }
+    </script>
+</body>
+</html>
