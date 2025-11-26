@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Possession.com - Browse Hosts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
+            min-height: 100vh;
+        }
+
+        /* Header/Navigation */
+        .header {
+            background: rgba(20, 20, 40, 0.95);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #e0b3ff;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .search-box {
+            flex: 0 1 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 16px;
+            background: rgba(40, 40, 60, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .search-box input::placeholder {
+            color: #8a8a8a;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: #e0e0e0;
+            transition: color 0.2s;
+        }
+
+        .nav-icon:hover {
+            color: #e0b3ff;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            color: #b08fd1;
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            background: rgba(40, 40, 60, 0.9);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .request-button {
+            margin-left: auto;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .request-button:hover {
+            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Grid Layout */
+        .hosts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .hosts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hosts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Host Card */
+        .host-card {
+            position: relative;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            background: rgba(20, 20, 40, 0.5);
+        }
+
+        .host-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(138, 43, 226, 0.5);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        .host-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .host-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+            padding: 20px 15px 15px;
+            color: white;
+        }
+
+        .host-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: #ffffff;
+        }
+
+        .host-age {
+            font-size: 14px;
+            color: #d0d0d0;
+            font-weight: 400;
+        }
+
+        .host-price {
+            font-size: 13px;
+            color: #90ee90;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* Badges */
+        .badges {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            color: white;
+        }
+
+        .badge-hot {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+            color: white;
+        }
+
+        .badge-possessed {
+            background: linear-gradient(135deg, #9d4edd 0%, #7209b7 100%);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 2px 15px rgba(157, 78, 221, 0.6);
+            }
+        }
+
+        /* Stats overlay (optional hover effect) */
+        .host-stats {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #ffd700;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #b08fd1;
+            font-size: 18px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8a8a8a;
+        }
+
+        .empty-state h3 {
+            color: #b08fd1;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <span>👻</span>
+                <span>Possession.com</span>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" placeholder="Search hosts..." id="searchInput">
+            </div>
+            
+            <div class="nav-icons">
+                <span class="nav-icon" title="Home">🏠</span>
+                <span class="nav-icon" title="Messages">💬</span>
+                <span class="nav-icon" title="Favorites">❤️</span>
+                <span class="nav-icon" title="Profile">👤</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label>Age Range</label>
+                <select id="ageFilter">
+                    <option value="all">All Ages</option>
+                    <option value="18-25">18-25</option>
+                    <option value="26-35">26-35</option>
+                    <option value="36-45">36-45</option>
+                    <option value="46+">46+</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Gender</label>
+                <select id="genderFilter">
+                    <option value="all">All</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Occupation</label>
+                <select id="occupationFilter">
+                    <option value="all">All</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="business">Business</option>
+                    <option value="creative">Creative</option>
+                    <option value="medical">Medical</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Availability</label>
+                <select id="availabilityFilter">
+                    <option value="all">All</option>
+                    <option value="available">Available</option>
+                    <option value="possessed">Currently Possessed</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Sort By</label>
+                <select id="sortFilter">
+                    <option value="popular">Most Popular</option>
+                    <option value="newest">Newest</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+
+            <button class="request-button" onclick="goToRequest()">
+                ➕ Request New Host
+            </button>
+        </div>
+
+        <!-- Hosts Grid -->
+        <div class="hosts-grid" id="hostsGrid">
+            <!-- Host cards will be generated here -->
+        </div>
+    </main>
+
+    <script>
+        // Sample host data
+        const hosts = [
+            {
+                id: 1,
+                name: "Maria Martinez-Rios",
+                age: 35,
+                image: "https://cdni.pornpics.com/1280/5/101/69033315/69033315_002_59aa.jpg",
+                rating: 4.9,
+                price: 599,
+                isNew: false,
+                isHot: false,
+                isPossessed: true,
+                profileUrl: "https://augiea.github.io/possession.com/maria-martinez.html"
+            },
+            {
+                id: 2,
+                name: "Vanessa Wilkinson",
+                image: "https://i.pinimg.com/474x/91/43/0f/91430ffd00858228af9e80dc6bfb66f6--sunderland-yo.jpg",
+                rating: 4.8,
+                age: 20,
+                price: 399,
+                isNew: false,
+                isHot: false,
+                isPossessed: true,
+                profileUrl: "profile2.html"
+            },
+            {
+                id: 3,
+                name: "Pauline Sorinot",
+                age: 18,
+                image: "https://i.pinimg.com/originals/ae/07/52/ae0752b89386c05a3f16e80d664845cb.jpg",
+                rating: 4.7,
+                price: 349,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                profileUrl: "profile3.html"
+            },
+            {
+                id: 4,
+                name: "Laura Myers",
+                age: 21,
+                image: "https://i.imgur.com/7uRFdy8.jpeg",
+                rating: 3.2,
+                price: 99,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                profileUrl: "profile4.html"
+            },
+            {
+                id: 5,
+                name: "Janet Werner",
+                age: 39,
+                image: "https://i.pinimg.com/originals/31/59/dc/3159dc224329f0191a99f0ccd95fc8e6.jpg",
+                rating: 4.6,
+                price: 249,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                profileUrl: "profile5.html"
+            },
+            {
+                id: 6,
+                name: "Kasha Garbedian",
+                age: 28,
+                image: "https://www.18plus.photos/wpress/wp-content/uploads/2021/05/FTVGirls-Sophia-Sultry-flexible-04.jpg",
+                rating: 4.8,
+                price: 749,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                profileUrl: "profile6.html"
+            },
+            {
+                id: 7,
+                name: "Jenny Mischke",
+                age: 27,
+                image: "https://cdn.cherrynudes.com/app/uploads/galleries/giulia-wylde-has-arrived-zishy/4.jpg",
+                rating: 4.6,
+                price: 249,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                profileUrl: "profile7.html"
+            },
+            {
+                id: 8,
+                name: "Erin Flanagan",
+                age: 28,
+                image: "https://i.imgur.com/PcrQ74N.jpeg",
+                rating: 4.6,
+                price: 349,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                profileUrl: "profile8.html"
+            },
+            {
+                id: 9,
+                name: "Janis Suzuki",
+                age: 37,
+                image: "https://fuckjpg.com/201801/23/2000391883.jpg",
+                rating: 4.8,
+                price: 379,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                profileUrl: "profile9.html"
+            },
+            {
+                id: 10,
+                name: "Kelly Rupp",
+                age: 22,
+                image: "https://cdni.pornpics.com/1280/7/91/74678154/74678154_009_80d4.jpg",
+                rating: 4.9,
+                price: 499,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                profileUrl: "profile9.html"
+            },
+            {
+                id: 11,
+                name: "Isabella Monez",
+                age: 22,
+                image: "https://i.imgur.com/q2SG016.jpg",
+                rating: 4.5,
+                price: 679,
+                isNew: false,
+                isHot: false,
+                isPossessed: true,
+                profileUrl: "profile9.html"
+            },
+            {
+                id: 12,
+                name: "Dana Yang-Phillips",
+                age: 22,
+                image: "https://images-cdn.ubuy.co.it/665171fa3367800b38005140-eva-lovia-8x10-photo-sexy-actress-girl.jpg",
+                rating: 4.4,
+                price: 279,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                profileUrl: "profile9.html"
+            },
+            {
+                id: 13,
+                name: "Nathalie Eastman",
+                age: 20,
+                image: "https://www.mines.edu/pascal/wp-content/uploads/sites/375/2024/07/IMG_4616-3.jpg",
+                rating: 4.8,
+                price: 599,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                profileUrl: "profile9.html"
+            },
+            {
+                id: 14,
+                name: "Angelina Tannaro",
+                age: 24,
+                image: "https://pbs.twimg.com/media/G217PRmWoAAOkEF.jpg",
+                rating: 4.2,
+                price: 299,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                profileUrl: "profile9.html"
+            },
+            {
+                id: 15,
+                name: "Celia Nordgren",
+                age: 28,
+                image: "https://i.imgur.com/Qf60brL.jpeg",
+                rating: 3.9,
+                price: 209,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                profileUrl: "profile9.html"
+            }
+        ];
+
+        // Render hosts
+        function renderHosts(hostsToRender = hosts) {
+            const grid = document.getElementById('hostsGrid');
+            
+            if (hostsToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <h3>No hosts found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = hostsToRender.map(host => `
+                <div class="host-card" onclick="goToProfile('${host.profileUrl}')">
+                    <img src="${host.image}" alt="${host.name}" class="host-image">
+                    
+                    <div class="host-stats">
+                        ⭐ ${host.rating}
+                    </div>
+                    
+                    ${(host.isNew || host.isHot || host.isPossessed) ? `
+                        <div class="badges">
+                            ${host.isNew ? '<div class="badge badge-new">New</div>' : ''}
+                            ${host.isHot ? '<div class="badge badge-hot">Hot</div>' : ''}
+                            ${host.isPossessed ? '<div class="badge badge-possessed">👻 Possessed</div>' : ''}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="host-overlay">
+                        <div class="host-name">${host.name}</div>
+                        <div class="host-age">${host.age} years old</div>
+                        <div class="host-price">${host.price}/hour</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Navigation functions
+        function goToProfile(url) {
+            // In a real implementation, this would navigate to the profile page
+            window.location.href = url;
+        }
+
+        function goToRequest() {
+            // Navigate to request page
+            window.location.href = 'request.html';
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = hosts.filter(host => 
+                host.name.toLowerCase().includes(searchTerm)
+            );
+            renderHosts(filtered);
+        });
+
+        // Filter functionality
+        const filters = {
+            age: 'all',
+            gender: 'all',
+            occupation: 'all',
+            availability: 'all',
+            sort: 'popular'
+        };
+
+        document.getElementById('ageFilter').addEventListener('change', (e) => {
+            filters.age = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('genderFilter').addEventListener('change', (e) => {
+            filters.gender = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('occupationFilter').addEventListener('change', (e) => {
+            filters.occupation = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('availabilityFilter').addEventListener('change', (e) => {
+            filters.availability = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('sortFilter').addEventListener('change', (e) => {
+            filters.sort = e.target.value;
+            applyFilters();
+        });
+
+        function applyFilters() {
+            let filtered = [...hosts];
+
+            // Age filter
+            if (filters.age !== 'all') {
+                const [min, max] = filters.age.split('-').map(v => v.replace('+', ''));
+                filtered = filtered.filter(host => {
+                    if (filters.age.includes('+')) {
+                        return host.age >= parseInt(min);
+                    }
+                    return host.age >= parseInt(min) && host.age <= parseInt(max);
+                });
+            }
+
+            // Availability filter
+            if (filters.availability !== 'all') {
+                if (filters.availability === 'available') {
+                    filtered = filtered.filter(host => !host.isPossessed);
+                } else if (filters.availability === 'possessed') {
+                    filtered = filtered.filter(host => host.isPossessed);
+                }
+            }
+
+            // Sort
+            switch(filters.sort) {
+                case 'newest':
+                    filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+                    break;
+                case 'rating':
+                    filtered.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'popular':
+                    filtered.sort((a, b) => (b.isHot ? 1 : 0) - (a.isHot ? 1 : 0));
+                    break;
+                case 'price-low':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+            }
+
+            renderHosts(filtered);
+        }
+
+        // Initial render - ensure DOM is fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                renderHosts();
+            });
+        } else {
+            renderHosts();
+        }
+    </script>
+</body>
+</html>
