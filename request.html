@@ -475,7 +475,22 @@
         </div>
     </div>
 
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script>
+        // ============================================
+        // EMAILJS CONFIGURATION
+        // ============================================
+        // TODO: Replace these with your EmailJS credentials
+        // Get them from: https://dashboard.emailjs.com/
+        const EMAILJS_PUBLIC_KEY = 'Nc-uVE_SdO6I_64fZ';  // Replace with your public key
+        const EMAILJS_SERVICE_ID = 'service_lokeuz8';   // Replace with your service ID
+        const EMAILJS_TEMPLATE_ID = 'template_qm1tzkz'; // Replace with your template ID
+        
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        
         let uploadedImages = [null, null, null];
 
         function handleImageUpload(event, index) {
@@ -567,13 +582,17 @@
             return formData;
         }
 
-        document.getElementById('hostRequestForm').addEventListener('submit', function(e) {
+        document.getElementById('hostRequestForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (!validateForm()) {
                 alert('⚠️ Please fill in all required fields and upload all 3 images.');
                 return;
             }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 SENDING...';
 
             const jsonData = generateJSON();
             const jsonString = JSON.stringify(jsonData, null, 2);
@@ -582,24 +601,41 @@
             const username = jsonData.reviews[0].user;
             const subject = `${username} - ${hostName}`;
             
-            const emailBody = `New Host Request Submission
+            // Prepare email parameters
+            const templateParams = {
+                to_email: 'mailerosemodel@gmail.com',
+                subject: subject,
+                username: username,
+                host_name: hostName,
+                json_data: jsonString,
+                from_name: username
+            };
 
-Username: ${username}
-Host Name: ${hostName}
-
-JSON Data:
-${jsonString}
-
----
-Images are embedded as base64 data URLs in the JSON above.`;
-
-            const mailtoLink = `mailto:mailerosemodel@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Show confirmation
-            alert('✅ Email client opened! Please send the email to complete your submission.\n\nThe JSON data has been formatted and included in the email body.');
+            try {
+                // Send email using EmailJS
+                const response = await emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('SUCCESS!', response.status, response.text);
+                alert('✅ Host request submitted successfully!\n\nYour submission has been sent to mailerosemodel@gmail.com');
+                
+                // Reset form
+                document.getElementById('hostRequestForm').reset();
+                uploadedImages = [null, null, null];
+                document.querySelectorAll('.image-upload-box').forEach(box => {
+                    box.classList.remove('has-image');
+                });
+                
+            } catch (error) {
+                console.error('FAILED...', error);
+                alert('❌ Failed to send submission. Please try again.\n\nError: ' + error.text);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 SUBMIT HOST REQUEST';
+            }
         });
 
         // Remove error state on input
