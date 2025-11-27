@@ -347,9 +347,9 @@
                 <label>Breasts</label>
                 <select id="breastsFilter">
                     <option value="all">All</option>
-                    <option value="female">Small</option>
-                    <option value="male">Large</option>
-                    <option value="other">Huge</option>
+                    <option value="Small">Small</option>
+                    <option value="Large">Large</option>
+                    <option value="Huge">Huge</option>
                 </select>
             </div>
 
@@ -357,10 +357,9 @@
                 <label>Hair</label>
                 <select id="hairFilter">
                     <option value="all">All</option>
-                    <option value="teacher">Blonde</option>
-                    <option value="business">Brunette</option>
-                    <option value="creative">Redhead</option>
-                    <option value="medical">Other</option>
+                    <option value="Blonde">Blonde</option>
+                    <option value="Brunette">Brunette</option>
+                    <option value="Redhead">Redhead</option>
                 </select>
             </div>
             
@@ -741,6 +740,16 @@
                     }
                     return host.age >= parseInt(min) && host.age <= parseInt(max);
                 });
+            }
+
+            // Hair Color Filter
+            if (filters.hair !== 'all') {
+                filtered = filtered.filter(host => host.hair === filters.hair);
+            }
+        
+            // Breast Size Filter
+            if (filters.breasts !== 'all') {
+                filtered = filtered.filter(host => host.breasts === filters.breasts);
             }
 
             // Availability filter
