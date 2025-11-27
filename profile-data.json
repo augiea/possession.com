@@ -12,11 +12,17 @@
     "libido": "Moderate to High",
     "responsiveness": "Moderate, prefers emotional connection",
     "skills": "Spanish (native level fluency)",
-    "basePrice": 299,
+    "prices": {
+      "1": 299,
+      "4": 899,
+      "24": 2499,
+      "168": 9999,
+      "720": 29999
+    },
     "images": [
-      "https://cdni.pornpics.com/1280/5/101/69033315/69033315_002_59aa.jpg",
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400"
+      "https://your-image-url-1.jpg",
+      "https://your-image-url-2.jpg",
+      "https://your-image-url-3.jpg"
     ],
     "reviews": [
       {
@@ -24,11 +30,11 @@
         "rating": 5,
         "text": "Absolutely incredible experience!"
       }
+      {
+        "user": "SpectralWanderer_42",
+        "rating": 5,
+        "text": "Absolutely incredible experience!"
+      }
     ]
-  },
-  "sarah": {
-    "name": "Sarah Chen",
-    "age": 28,
-    ...
   }
 }
