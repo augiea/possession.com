@@ -344,24 +344,23 @@
             </div>
 
             <div class="filter-group">
-                <label>Gender</label>
-                <select id="genderFilter">
+                <label>Breasts</label>
+                <select id="breastsFilter">
                     <option value="all">All</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                    <option value="other">Other</option>
+                    <option value="female">Small</option>
+                    <option value="male">Large</option>
+                    <option value="other">Huge</option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <label>Occupation</label>
-                <select id="occupationFilter">
+                <label>Hair</label>
+                <select id="hairFilter">
                     <option value="all">All</option>
-                    <option value="teacher">Teacher</option>
-                    <option value="business">Business</option>
-                    <option value="creative">Creative</option>
-                    <option value="medical">Medical</option>
-                    <option value="other">Other</option>
+                    <option value="teacher">Blonde</option>
+                    <option value="business">Brunette</option>
+                    <option value="creative">Redhead</option>
+                    <option value="medical">Other</option>
                 </select>
             </div>
             
@@ -411,6 +410,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Blonde", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?maile"
         },
         {
@@ -423,6 +423,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?jenny"
         },
         {
@@ -435,6 +436,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?pauline"
         },
         {
@@ -447,6 +449,7 @@
             isNew: false,
             isHot: false,
             isPossessed: true,
+            hair: "Blonde", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/maria-martinez.html"
         },
         {
@@ -459,6 +462,7 @@
             isNew: false,
             isHot: false,
             isPossessed: true,
+            hair: "Blonde", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?vanessa"
         },
         {
@@ -471,6 +475,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Brunette", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?laura"
         },
         {
@@ -483,6 +488,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Brunette", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?janet"
         },
         {
@@ -495,6 +501,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Small",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?kasha"
         },
         {
@@ -507,6 +514,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Redhead", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?erin"
         },
         {
@@ -519,6 +527,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?janis"
         },
         {
@@ -531,6 +540,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Small",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?kelly"
         },
         {
@@ -543,6 +553,7 @@
             isNew: false,
             isHot: false,
             isPossessed: true,
+            hair: "Brunette", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?isabella"
         },
         {
@@ -555,6 +566,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Brunette", breasts: "Small",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?dana"
         },
         {
@@ -567,6 +579,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?nathalie"
         },
         {
@@ -579,6 +592,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Brunette", breasts: "Small",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?angelina"
         },
         {
@@ -591,6 +605,7 @@
             isNew: true,
             isHot: false,
             isPossessed: false,
+            hair: "Blonde", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?celia"
         },
         {
@@ -603,6 +618,7 @@
             isNew: false,
             isHot: true,
             isPossessed: false,
+            hair: "Brunette", breasts: "Large",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?camila"
         },
         {
@@ -615,6 +631,7 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
+            hair: "Brunette", breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?jessica"
         }
     ];
@@ -681,8 +698,8 @@
         // Filter functionality
         const filters = {
             age: 'all',
-            gender: 'all',
-            occupation: 'all',
+            breasts: 'all',
+            hair: 'all',
             availability: 'all',
             sort: 'popular'
         };
@@ -692,13 +709,13 @@
             applyFilters();
         });
 
-        document.getElementById('genderFilter').addEventListener('change', (e) => {
-            filters.gender = e.target.value;
+        document.getElementById('breastsFilter').addEventListener('change', (e) => {
+            filters.breasts = e.target.value;
             applyFilters();
         });
 
-        document.getElementById('occupationFilter').addEventListener('change', (e) => {
-            filters.occupation = e.target.value;
+        document.getElementById('hairFilter').addEventListener('change', (e) => {
+            filters.hair = e.target.value;
             applyFilters();
         });
 
