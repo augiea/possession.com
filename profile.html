@@ -523,7 +523,7 @@
                         <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)} ${review.rating}/5</span>
                     </div>
                     <div class="review-text">
-                        ${review.text}
+                        ${review.text.replace(/\n/g, '<br>')}
                     </div>
                 </div>
             `).join('');
