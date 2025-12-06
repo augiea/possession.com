@@ -296,6 +296,18 @@
             gap: 4px;
         }
 
+        .ad-card {
+            position: relative;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            background: rgba(20, 20, 40, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Loading state */
         .loading {
             text-align: center;
@@ -683,8 +695,8 @@
                 `;
                 return;
             }
-
-            grid.innerHTML = hostsToRender.map(host => `
+        
+            const hostCards = hostsToRender.map(host => `
                 <div class="host-card" onclick="goToProfile('${host.profileUrl}')">
                     <img src="${host.image}" alt="${host.name}" class="host-image">
                     
@@ -706,7 +718,34 @@
                         <div class="host-price">${host.price}/hour</div>
                     </div>
                 </div>
-            `).join('');
+            `);
+        
+            // Insert ad at position 3 (4th item, index 3)
+                    const adCard1 = `
+                <div class="ad-card">
+                    <!-- JuicyAds v3.0 -->
+                    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"><\/script>
+                    <ins id="1106690" data-width="258" data-height="528"></ins>
+                    <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1106690});<\/script>
+                    <!--JuicyAds END-->
+                </div>
+            `;
+            
+            // Second ad at position 7 (8th item)
+            const adCard2 = `
+                <div class="ad-card">
+                    <!-- JuicyAds v3.0 -->
+                    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"><\/script>
+                    <ins id="1106692" data-width="258" data-height="528"></ins>
+                    <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1106692});<\/script>
+                    <!--JuicyAds END-->
+                </div>
+            `;
+            
+            hostCards.splice(7, 0, adCard1);
+            hostCards.splice(12, 0, adCard2); // Note: index is now 8 because we already inserted one ad
+            
+            grid.innerHTML = hostCards.join('');
         }
 
         // Navigation functions
