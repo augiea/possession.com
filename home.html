@@ -430,9 +430,31 @@
         </div>
     </main>
 
-    <script>
-        // Sample host data
-            const hosts = [
+   <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
+        authDomain: "reviews-48f44.firebaseapp.com",
+        databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
+        projectId: "reviews-48f44",
+        storageBucket: "reviews-48f44.firebasestorage.app",
+        messagingSenderId: "978976687091",
+        appId: "1:978976687091:web:a9a6cdc13e6570ab598886"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Store all hosts (legacy + Firebase)
+    let allHosts = [];
+    
+    // Legacy hardcoded hosts (keep your existing array here)
+    const legacyHosts = [
         {
             id: 1,
             name: "Maile Rose",
@@ -443,7 +465,8 @@
             isNew: false,
             isHot: false,
             isPossessed: false,
-            hair: "Blonde", breasts: "Huge",
+            hair: "Blonde", 
+            breasts: "Huge",
             profileUrl: "https://augiea.github.io/possession.com/profile.html?maile"
         },
         {
@@ -707,7 +730,7 @@
         profileUrl: "https://augiea.github.io/possession.com/profile.html?taylor"
         },
         {
-        id: 21,
+        id: 22,
         name: "Sam Pamija",
         age: 23,
         image: "https://www.babepedia.com/pics/Pam%20Semija4.jpg",
@@ -720,7 +743,7 @@
         profileUrl: "https://augiea.github.io/possession.com/profile.html?sam"
         },
         {
-        id: 21,
+        id: 23,
         name: "Alexis Lake",
         age: 24,
         image: "https://i.redd.it/x4xj63yk511d1.jpg",
@@ -733,217 +756,261 @@
         profileUrl: "https://augiea.github.io/possession.com/profile.html?alexis"
         },
         {
-        id: 21,
-        name: "Ewa Nowak",
-        age: 25,
-        image: "https://cdni.pornpics.com/1280/1/141/44025680/44025680_004_0bbb.jpg",
-        rating: 4.7,
-        price: 399,
-        isNew: true,
-        isHot: false,
-        isPossessed: false,
-        hair: "Blonde", breasts: "Huge",
-        profileUrl: "https://augiea.github.io/possession.com/profile.html?ewa"
-        }
+            id: 24,
+            name: "Ewa Nowak",
+            age: 25,
+            image: "https://cdni.pornpics.com/1280/1/141/44025680/44025680_004_0bbb.jpg",
+            rating: 4.7,
+            price: 399,
+            isNew: true,
+            isHot: false,
+            isPossessed: false,
+            hair: "Blonde", 
+            breasts: "Huge",
+            profileUrl: "https://augiea.github.io/possession.com/profile.html?ewa"
+        }
     ];
-    
 
-        // Render hosts
-        function renderHosts(hostsToRender = hosts) {
-            const grid = document.getElementById('hostsGrid');
-            
-            if (hostsToRender.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1/-1;">
-                        <h3>No hosts found</h3>
-                        <p>Try adjusting your filters</p>
-                    </div>
-                `;
-                return;
-            }
+    // Start with legacy hosts
+    allHosts = [...legacyHosts];
+
+    // Load approved hosts from Firebase
+    function loadFirebaseHosts() {
+        const hostsRef = ref(database, 'hostRequests');
+        const approvedQuery = query(hostsRef, orderByChild('approved'), equalTo(true));
         
-            const hostCards = hostsToRender.map(host => `
-                <div class="host-card" onclick="goToProfile('${host.profileUrl}')">
-                    <img src="${host.image}" alt="${host.name}" class="host-image">
-                    
-                    <div class="host-stats">
-                        ⭐ ${host.rating}
-                    </div>
-                    
-                    ${(host.isNew || host.isHot || host.isPossessed) ? `
-                        <div class="badges">
-                            ${host.isNew ? '<div class="badge badge-new">New</div>' : ''}
-                            ${host.isHot ? '<div class="badge badge-hot">Hot</div>' : ''}
-                            ${host.isPossessed ? '<div class="badge badge-possessed">👻 Possessed</div>' : ''}
-                        </div>
-                    ` : ''}
-                    
-                    <div class="host-overlay">
-                        <div class="host-name">${host.name}</div>
-                        <div class="host-age">${host.age} years old</div>
-                        <div class="host-price">${host.price}/hour</div>
-                    </div>
-                </div>
-            `);
-        
-            // Ad placeholders without scripts
-            const adCard1 = '<div class="ad-card ad-placeholder" data-ad-id="1106690"></div>';
-            const adCard2 = '<div class="ad-card ad-placeholder" data-ad-id="1106692"></div>';
-            const adCard3 = '<div class="ad-card ad-placeholder" data-ad-id="1106774"></div>';
-            const adCard4 = '<div class="ad-card ad-placeholder" data-ad-id="1106775"></div>';
+        onValue(approvedQuery, (snapshot) => {
+            // Reset to legacy hosts
+            allHosts = [...legacyHosts];
             
-            hostCards.splice(7, 0, adCard1);
-            hostCards.splice(12, 0, adCard2);
-            hostCards.splice(17, 0, adCard3);
-            hostCards.splice(22, 0, adCard4);
-            
-            grid.innerHTML = hostCards.join('');
-            
-            // Inject ads after DOM is ready
-            loadAds();
-        }
-        
-        // Function to load ads dynamically
-        function loadAds() {
-            const adPlaceholders = document.querySelectorAll('.ad-placeholder');
-            
-            adPlaceholders.forEach(placeholder => {
-                const adId = placeholder.getAttribute('data-ad-id');
+            // Add Firebase approved hosts
+            snapshot.forEach((childSnapshot) => {
+                const id = childSnapshot.key;
+                const host = childSnapshot.val();
                 
-                // Create ins element
-                const ins = document.createElement('ins');
-                ins.id = adId;
-                ins.setAttribute('data-width', '258');
-                ins.setAttribute('data-height', '528');
-                
-                placeholder.appendChild(ins);
-                
-                // Push to JuicyAds queue
-                if (window.adsbyjuicy) {
-                    window.adsbyjuicy.push({'adzone': parseInt(adId)});
-                }
-            });
-        }
-
-        // Navigation functions
-        function goToProfile(url) {
-            // In a real implementation, this would navigate to the profile page
-            window.location.href = url;
-        }
-
-        function goToRequest() {
-            // Navigate to request page
-            window.location.href = 'request.html';
-        }
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filtered = hosts.filter(host => 
-                host.name.toLowerCase().includes(searchTerm)
-            );
-            renderHosts(filtered);
-        });
-
-        // Filter functionality
-        const filters = {
-            age: 'all',
-            breasts: 'all',
-            hair: 'all',
-            availability: 'all',
-            sort: 'popular'
-        };
-
-        document.getElementById('ageFilter').addEventListener('change', (e) => {
-            filters.age = e.target.value;
-            applyFilters();
-        });
-
-        document.getElementById('breastsFilter').addEventListener('change', (e) => {
-            filters.breasts = e.target.value;
-            applyFilters();
-        });
-
-        document.getElementById('hairFilter').addEventListener('change', (e) => {
-            filters.hair = e.target.value;
-            applyFilters();
-        });
-
-        document.getElementById('availabilityFilter').addEventListener('change', (e) => {
-            filters.availability = e.target.value;
-            applyFilters();
-        });
-
-        document.getElementById('sortFilter').addEventListener('change', (e) => {
-            filters.sort = e.target.value;
-            applyFilters();
-        });
-
-        function applyFilters() {
-            let filtered = [...hosts];
-
-            // Age filter
-            if (filters.age !== 'all') {
-                const [min, max] = filters.age.split('-').map(v => v.replace('+', ''));
-                filtered = filtered.filter(host => {
-                    if (filters.age.includes('+')) {
-                        return host.age >= parseInt(min);
-                    }
-                    return host.age >= parseInt(min) && host.age <= parseInt(max);
+                // Convert Firebase host to display format
+                allHosts.push({
+                    id: 'firebase_' + id,
+                    name: host.name,
+                    age: host.age,
+                    image: host.images[0], // Use first image
+                    rating: host.reviews[0]?.rating || 4.5,
+                    price: host.prices['1'], // 1-hour price
+                    isNew: true, // Mark Firebase hosts as "NEW"
+                    isHot: false,
+                    isPossessed: false,
+                    hair: host.hair || "Brunette",
+                    breasts: host.breasts || "Large",
+                    profileUrl: `https://augiea.github.io/possession.com/profile.html?fb_${id}`
                 });
-            }
-
-            // Hair Color Filter
-            if (filters.hair !== 'all') {
-                filtered = filtered.filter(host => host.hair === filters.hair);
-            }
-        
-            // Breast Size Filter
-            if (filters.breasts !== 'all') {
-                filtered = filtered.filter(host => host.breasts === filters.breasts);
-            }
-
-            // Availability filter
-            if (filters.availability !== 'all') {
-                if (filters.availability === 'available') {
-                    filtered = filtered.filter(host => !host.isPossessed);
-                } else if (filters.availability === 'possessed') {
-                    filtered = filtered.filter(host => host.isPossessed);
-                }
-            }
-
-            // Sort
-            switch(filters.sort) {
-                case 'newest':
-                    filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-                    break;
-                case 'rating':
-                    filtered.sort((a, b) => b.rating - a.rating);
-                    break;
-                case 'popular':
-                    filtered.sort((a, b) => (b.isHot ? 1 : 0) - (a.isHot ? 1 : 0));
-                    break;
-                case 'price-low':
-                    filtered.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price-high':
-                    filtered.sort((a, b) => b.price - a.price);
-                    break;
-            }
-
-            renderHosts(filtered);
-        }
-
-        // Initial render - ensure DOM is fully loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                renderHosts();
             });
-        } else {
-            renderHosts();
-        }
+            
+            console.log(`Loaded ${allHosts.length} total hosts (${legacyHosts.length} legacy + ${allHosts.length - legacyHosts.length} Firebase)`);
+            
+            // Re-render with all hosts
+            renderHosts(allHosts);
+            
+        }, (error) => {
+            console.error('Error loading Firebase hosts:', error);
+            // Still show legacy hosts even if Firebase fails
+            renderHosts(allHosts);
+        });
+    }
+
+    // Render hosts function (KEEP YOUR EXISTING FUNCTION, just use allHosts instead of hosts)
+    function renderHosts(hostsToRender = allHosts) {
+        const grid = document.getElementById('hostsGrid');
         
-    </script>
-    <script type="text/javascript" data-id="juicyads-native-ads" data-ad-zone="1106084" data-targets="a" src="https://js.juicyads.com/juicyads.native-ads.min.js"></script>
+        if (hostsToRender.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <h3>No hosts found</h3>
+                    <p>Try adjusting your filters</p>
+                </div>
+            `;
+            return;
+        }
+    
+        const hostCards = hostsToRender.map(host => `
+            <div class="host-card" onclick="goToProfile('${host.profileUrl}')">
+                <img src="${host.image}" alt="${host.name}" class="host-image">
+                
+                <div class="host-stats">
+                    ⭐ ${host.rating}
+                </div>
+                
+                ${(host.isNew || host.isHot || host.isPossessed) ? `
+                    <div class="badges">
+                        ${host.isNew ? '<div class="badge badge-new">New</div>' : ''}
+                        ${host.isHot ? '<div class="badge badge-hot">Hot</div>' : ''}
+                        ${host.isPossessed ? '<div class="badge badge-possessed">👻 Possessed</div>' : ''}
+                    </div>
+                ` : ''}
+                
+                <div class="host-overlay">
+                    <div class="host-name">${host.name}</div>
+                    <div class="host-age">${host.age} years old</div>
+                    <div class="host-price">$${host.price}/hour</div>
+                </div>
+            </div>
+        `);
+    
+        // Ad placeholders
+        const adCard1 = '<div class="ad-card ad-placeholder" data-ad-id="1106690"></div>';
+        const adCard2 = '<div class="ad-card ad-placeholder" data-ad-id="1106692"></div>';
+        const adCard3 = '<div class="ad-card ad-placeholder" data-ad-id="1106774"></div>';
+        const adCard4 = '<div class="ad-card ad-placeholder" data-ad-id="1106775"></div>';
+        
+        hostCards.splice(7, 0, adCard1);
+        hostCards.splice(12, 0, adCard2);
+        hostCards.splice(17, 0, adCard3);
+        hostCards.splice(22, 0, adCard4);
+        
+        grid.innerHTML = hostCards.join('');
+        
+        loadAds();
+    }
+    
+    // Function to load ads dynamically
+    function loadAds() {
+        const adPlaceholders = document.querySelectorAll('.ad-placeholder');
+        
+        adPlaceholders.forEach(placeholder => {
+            const adId = placeholder.getAttribute('data-ad-id');
+            
+            const ins = document.createElement('ins');
+            ins.id = adId;
+            ins.setAttribute('data-width', '258');
+            ins.setAttribute('data-height', '528');
+            
+            placeholder.appendChild(ins);
+            
+            if (window.adsbyjuicy) {
+                window.adsbyjuicy.push({'adzone': parseInt(adId)});
+            }
+        });
+    }
+
+    // Navigation functions
+    function goToProfile(url) {
+        window.location.href = url;
+    }
+
+    function goToRequest() {
+        window.location.href = 'request.html';
+    }
+    
+    // Make goToProfile global
+    window.goToProfile = goToProfile;
+    window.goToRequest = goToRequest;
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filtered = allHosts.filter(host => 
+            host.name.toLowerCase().includes(searchTerm)
+        );
+        renderHosts(filtered);
+    });
+
+    // Filter functionality
+    const filters = {
+        age: 'all',
+        breasts: 'all',
+        hair: 'all',
+        availability: 'all',
+        sort: 'popular'
+    };
+
+    document.getElementById('ageFilter').addEventListener('change', (e) => {
+        filters.age = e.target.value;
+        applyFilters();
+    });
+
+    document.getElementById('breastsFilter').addEventListener('change', (e) => {
+        filters.breasts = e.target.value;
+        applyFilters();
+    });
+
+    document.getElementById('hairFilter').addEventListener('change', (e) => {
+        filters.hair = e.target.value;
+        applyFilters();
+    });
+
+    document.getElementById('availabilityFilter').addEventListener('change', (e) => {
+        filters.availability = e.target.value;
+        applyFilters();
+    });
+
+    document.getElementById('sortFilter').addEventListener('change', (e) => {
+        filters.sort = e.target.value;
+        applyFilters();
+    });
+
+    function applyFilters() {
+        let filtered = [...allHosts];
+
+        // Age filter
+        if (filters.age !== 'all') {
+            const [min, max] = filters.age.split('-').map(v => v.replace('+', ''));
+            filtered = filtered.filter(host => {
+                if (filters.age.includes('+')) {
+                    return host.age >= parseInt(min);
+                }
+                return host.age >= parseInt(min) && host.age <= parseInt(max);
+            });
+        }
+
+        // Hair Color Filter
+        if (filters.hair !== 'all') {
+            filtered = filtered.filter(host => host.hair === filters.hair);
+        }
+    
+        // Breast Size Filter
+        if (filters.breasts !== 'all') {
+            filtered = filtered.filter(host => host.breasts === filters.breasts);
+        }
+
+        // Availability filter
+        if (filters.availability !== 'all') {
+            if (filters.availability === 'available') {
+                filtered = filtered.filter(host => !host.isPossessed);
+            } else if (filters.availability === 'possessed') {
+                filtered = filtered.filter(host => host.isPossessed);
+            }
+        }
+
+        // Sort
+        switch(filters.sort) {
+            case 'newest':
+                filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+                break;
+            case 'rating':
+                filtered.sort((a, b) => b.rating - a.rating);
+                break;
+            case 'popular':
+                filtered.sort((a, b) => (b.isHot ? 1 : 0) - (a.isHot ? 1 : 0));
+                break;
+            case 'price-low':
+                filtered.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-high':
+                filtered.sort((a, b) => b.price - a.price);
+                break;
+        }
+
+        renderHosts(filtered);
+    }
+
+    // Load Firebase hosts on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFirebaseHosts();
+        });
+    } else {
+        loadFirebaseHosts();
+    }
+</script>
+<script type="text/javascript" data-id="juicyads-native-ads" data-ad-zone="1106084" data-targets="a" src="https://js.juicyads.com/juicyads.native-ads.min.js"></script>
 </body>
 </html>
