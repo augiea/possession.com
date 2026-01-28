@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Possession.com - Submit Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4a0080 0%, #6a00a0 100%);
+            padding: 30px;
+            border-bottom: 2px solid #8a2be2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            color: #e0b3ff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            color: #e0b3ff;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-section {
+            background: rgba(40, 40, 60, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #6a00a0;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #b08fd1;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #ff6b6b;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(30, 30, 50, 0.9);
+            border: 1px solid #6a00a0;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-text {
+            color: #c0c0c0;
+            font-size: 0.9em;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .validation-error {
+            color: #ff6b6b;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: #ff6b6b;
+        }
+
+        .form-group.error .validation-error {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="https://augiea.github.io/possession.com/home.html" class="back-button" title="Back to Home">←</a>
+            <h1>⭐ Submit Review</h1>
+        </header>
+
+        <div class="content">
+            <form id="reviewForm">
+                <div class="form-section">
+                    <h2 style="color: #e0b3ff; margin-bottom: 20px;">Share Your Experience</h2>
+                    
+                    <div class="form-group">
+                        <label for="hostName">Host Name <span class="required">*</span></label>
+                        <input type="text" id="hostName" name="hostName" required placeholder="e.g., Maria, Vanessa">
+                        <p class="info-text">Enter the exact name of the host you possessed</p>
+                        <div class="validation-error">Host name is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Your Username <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" required placeholder="e.g., SpiritWalker92">
+                        <div class="validation-error">Username is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Rating <span class="required">*</span></label>
+                        <select id="rating" name="rating" required>
+                            <option value="">Select rating...</option>
+                            <option value="5">5 Stars - Exceptional</option>
+                            <option value="4">4 Stars - Great</option>
+                            <option value="3">3 Stars - Good</option>
+                            <option value="2">2 Stars - Fair</option>
+                            <option value="1">1 Star - Poor</option>
+                        </select>
+                        <div class="validation-error">Rating is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewText">Your Review <span class="required">*</span></label>
+                        <textarea id="reviewText" name="reviewText" required placeholder="Share details about your possession experience..."></textarea>
+                        <div class="validation-error">Review text is required</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitBtn">
+                    📨 SUBMIT REVIEW
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
+            authDomain: "reviews-48f44.firebaseapp.com",
+            databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
+            projectId: "reviews-48f44",
+            storageBucket: "reviews-48f44.firebasestorage.app",
+            messagingSenderId: "978976687091",
+            appId: "1:978976687091:web:a9a6cdc13e6570ab598886",
+            measurementId: "G-PY6SPKVLES"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['hostName', 'username', 'rating', 'reviewText'];
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const formGroup = field.closest('.form-group');
+                if (!field.value.trim()) {
+                    formGroup.classList.add('error');
+                    isValid = false;
+                } else {
+                    formGroup.classList.remove('error');
+                }
+            });
+
+            return isValid;
+        }
+
+        document.getElementById('reviewForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                alert('⚠️ Please fill in all required fields');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 SUBMITTING...';
+
+            const reviewData = {
+                hostName: document.getElementById('hostName').value.trim(),
+                user: document.getElementById('username').value.trim(),
+                rating: parseInt(document.getElementById('rating').value),
+                text: document.getElementById('reviewText').value.trim(),
+                timestamp: serverTimestamp(),
+                approved: false // Reviews start as unapproved
+            };
+
+            try {
+                // Push to Firebase Realtime Database
+                const reviewsRef = ref(database, 'reviews');
+                await push(reviewsRef, reviewData);
+                
+                alert('✅ Review submitted successfully!\n\nYour review will appear on the site once approved.');
+                
+                // Reset form
+                document.getElementById('reviewForm').reset();
+                
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert('❌ Failed to submit review. Please try again.\n\nError: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 SUBMIT REVIEW';
+            }
+        });
+
+        // Remove error state on input
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('input', function() {
+                const formGroup = this.closest('.form-group');
+                if (formGroup) {
+                    formGroup.classList.remove('error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
