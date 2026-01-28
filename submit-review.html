@@ -181,9 +181,11 @@
                     
                     <div class="form-group">
                         <label for="hostName">Host Name <span class="required">*</span></label>
-                        <input type="text" id="hostName" name="hostName" required placeholder="e.g., Maria, Vanessa">
-                        <p class="info-text">Enter the exact name of the host you possessed</p>
-                        <div class="validation-error">Host name is required</div>
+                        <select id="hostName" name="hostName" required>
+                            <option value="">Loading hosts...</option>
+                        </select>
+                        <p class="info-text">Select the host you possessed</p>
+                        <div class="validation-error">Please select a host</div>
                     </div>
 
                     <div class="form-group">
@@ -239,6 +241,33 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+
+        // Load available hosts from profile-data.json
+        async function loadHosts() {
+            const hostSelect = document.getElementById('hostName');
+            
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/augiea/possession.com/refs/heads/main/profile-data.json');
+                if (!response.ok) throw new Error('Failed to fetch hosts');
+                
+                const profiles = await response.json();
+                const hostNames = Object.values(profiles).map(profile => profile.name).sort();
+                
+                hostSelect.innerHTML = '<option value="">Select a host...</option>' + 
+                    hostNames.map(name => `<option value="${name}">${name}</option>`).join('');
+                    
+            } catch (error) {
+                console.error('Error loading hosts:', error);
+                // Fallback to manual entry if loading fails
+                hostSelect.innerHTML = '<option value="">Select a host...</option>' +
+                    '<option value="Maria">Maria</option>' +
+                    '<option value="Vanessa">Vanessa</option>' +
+                    '<option value="Other">Other (Contact Admin)</option>';
+            }
+        }
+
+        // Load hosts when page loads
+        loadHosts();
 
         function validateForm() {
             let isValid = true;
