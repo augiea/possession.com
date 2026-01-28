@@ -238,8 +238,8 @@
                             <input type="text" id="weight" name="weight" placeholder="e.g., 140 lbs">
                         </div>
                         <div class="form-group">
-                            <label for="build">Build</label>
-                            <input type="text" id="build" name="build" placeholder="e.g., Athletic, 34C">
+                            <label for="breastSize">Breast Size</label>
+                            <input type="text" id="breastSize" name="breastSize" placeholder="e.g., 34C">
                         </div>
                         <div class="form-group">
                             <label for="occupation">Occupation</label>
@@ -257,8 +257,8 @@
                             <input type="text" id="relationshipStatus" name="relationshipStatus" placeholder="e.g., Single, Married">
                         </div>
                         <div class="form-group">
-                            <label for="relationshipHistory">Relationship History</label>
-                            <input type="text" id="relationshipHistory" name="relationshipHistory" placeholder="e.g., 3 partners, all male">
+                            <label for="sexualHistory">Sexual History</label>
+                            <input type="text" id="sexualHistory" name="sexualHistory" placeholder="e.g., 3 partners, all male">
                         </div>
                         <div class="form-group">
                             <label for="wealth">Wealth</label>
@@ -380,21 +380,26 @@
         </div>
     </div>
 
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
-    <script>
-        // ============================================
-        // EMAILJS CONFIGURATION
-        // ============================================
-        // TODO: Replace these with your EmailJS credentials
-        // Get them from: https://dashboard.emailjs.com/
-        const EMAILJS_PUBLIC_KEY = 'Nc-uVE_SdO6I_64fZ';  // Replace with your public key
-        const EMAILJS_SERVICE_ID = 'service_lokeuz8';   // Replace with your service ID
-        const EMAILJS_TEMPLATE_ID = 'template_qm1tzkz'; // Replace with your template ID
-        
-        // Initialize EmailJS
-        emailjs.init(EMAILJS_PUBLIC_KEY);
+    <!-- Include Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
+            authDomain: "reviews-48f44.firebaseapp.com",
+            databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
+            projectId: "reviews-48f44",
+            storageBucket: "reviews-48f44.firebasestorage.app",
+            messagingSenderId: "978976687091",
+            appId: "1:978976687091:web:a9a6cdc13e6570ab598886",
+            measurementId: "G-PY6SPKVLES"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
         function isValidImageUrl(url) {
             const imageExtensions = ['.jpg', '.jpeg', '.png'];
@@ -436,7 +441,7 @@
             return isValid;
         }
 
-        function generateJSON() {
+        function generateHostData() {
             const formData = {
                 name: document.getElementById('name').value.trim(),
                 age: parseInt(document.getElementById('age').value),
@@ -456,13 +461,16 @@
                     user: document.getElementById('reviewUsername').value.trim(),
                     rating: parseInt(document.getElementById('reviewRating').value),
                     text: document.getElementById('reviewText').value.trim()
-                }]
+                }],
+                timestamp: serverTimestamp(),
+                approved: false,  // Requires admin approval
+                submittedBy: document.getElementById('reviewUsername').value.trim()
             };
 
             // Add optional fields only if they have values
             const optionalFields = [
-                'height', 'weight', 'build', 'occupation', 
-                'relationshipStatus', 'relationshipHistory', 'wealth',
+                'height', 'weight', 'breastSize', 'occupation', 
+                'relationshipStatus', 'sexualHistory', 'wealth',
                 'personality', 'libido', 'responsiveness', 'skills'
             ];
 
@@ -486,42 +494,23 @@
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.textContent = '📤 SENDING...';
+            submitBtn.textContent = '📤 SUBMITTING...';
 
-            const jsonData = generateJSON();
-            const jsonString = JSON.stringify(jsonData, null, 2);
-            
-            const hostName = jsonData.name;
-            const username = jsonData.reviews[0].user;
-            const subject = `${username} - ${hostName}`;
-            
-            // Prepare email parameters
-            const templateParams = {
-                to_email: 'hostrequests@possession.com',
-                subject: subject,
-                username: username,
-                host_name: hostName,
-                json_data: jsonString,
-                from_name: username
-            };
+            const hostData = generateHostData();
 
             try {
-                // Send email using EmailJS
-                const response = await emailjs.send(
-                    EMAILJS_SERVICE_ID,
-                    EMAILJS_TEMPLATE_ID,
-                    templateParams
-                );
+                // Push to Firebase Realtime Database
+                const hostsRef = ref(database, 'hostRequests');
+                await push(hostsRef, hostData);
                 
-                console.log('SUCCESS!', response.status, response.text);
-                alert('✅ Host request submitted successfully!\n\nYour submission has been sent to mailerosemodel@gmail.com');
+                alert('✅ Host request submitted successfully!\n\nYour submission will appear on the site once approved by an admin.');
                 
                 // Reset form
                 document.getElementById('hostRequestForm').reset();
                 
             } catch (error) {
-                console.error('FAILED...', error);
-                alert('❌ Failed to send submission. Please try again.\n\nError: ' + error.text);
+                console.error('Error submitting host request:', error);
+                alert('❌ Failed to submit request. Please try again.\n\nError: ' + error.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = '📨 SUBMIT HOST REQUEST';
