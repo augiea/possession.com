@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Possession.com - Review Admin</title>
+    <title>Possession.com - Review Admin (Secure)</title>
     <style>
         * {
             margin: 0;
@@ -33,12 +33,32 @@
             padding: 30px;
             border-bottom: 2px solid #8a2be2;
             text-align: center;
+            position: relative;
         }
 
         h1 {
             color: #e0b3ff;
             font-size: 2.5em;
             text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+        }
+
+        .logout-btn {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px 20px;
+            background: rgba(231, 76, 60, 0.8);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 1);
         }
 
         .content {
@@ -52,6 +72,12 @@
             padding: 30px;
             border-radius: 10px;
             border: 1px solid #6a00a0;
+        }
+
+        .auth-section h2 {
+            color: #e0b3ff;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .auth-section input {
@@ -81,6 +107,13 @@
         .auth-section button:hover {
             background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
         }
 
         .admin-content {
@@ -261,14 +294,17 @@
     <div class="container">
         <header>
             <h1>🔐 Review Administration</h1>
+            <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="logout()">Logout</button>
         </header>
 
         <div class="content">
             <!-- Authentication Section -->
             <div class="auth-section" id="authSection">
-                <h2 style="color: #e0b3ff; margin-bottom: 20px; text-align: center;">Admin Login</h2>
-                <input type="password" id="adminPassword" placeholder="Enter admin password">
-                <button onclick="authenticate()">Login</button>
+                <h2>Admin Login</h2>
+                <input type="email" id="adminEmail" placeholder="Email">
+                <input type="password" id="adminPassword" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <div class="error-message" id="errorMessage"></div>
             </div>
 
             <!-- Admin Content -->
@@ -321,6 +357,7 @@
     <!-- Include Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getDatabase, ref, onValue, update, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
         // Firebase configuration
@@ -337,30 +374,56 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const database = getDatabase(app);
 
         let allReviewsData = {};
 
-        // Authentication
-        window.authenticate = function() {
-            const password = document.getElementById('adminPassword').value;
-            // I know my cybersecurity sucks. Please be kind
-            if (password === 'fuck you for hacking me') {
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('logoutBtn').style.display = 'block';
                 loadReviews();
             } else {
-                alert('Incorrect password');
+                // User is signed out
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        });
+
+        // Login function
+        window.login = async function() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                errorMessage.style.display = 'none';
+            } catch (error) {
+                errorMessage.textContent = 'Invalid email or password';
+                errorMessage.style.display = 'block';
+                console.error('Login error:', error);
+            }
+        };
+
+        // Logout function
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Logout error:', error);
             }
         };
 
         // Tab switching
         window.switchTab = function(tabName) {
-            // Update tab buttons
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
-
-            // Update tab content
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabName + 'Tab').classList.add('active');
         };
@@ -386,12 +449,10 @@
                     }
                 });
 
-                // Update statistics
                 document.getElementById('statPending').textContent = pending.length;
                 document.getElementById('statApproved').textContent = approved.length;
                 document.getElementById('statTotal').textContent = pending.length + approved.length;
 
-                // Render reviews
                 renderReviews('pendingReviews', pending, false);
                 renderReviews('approvedReviews', approved, true);
                 renderReviews('allReviews', [...pending, ...approved], null);
@@ -406,7 +467,6 @@
                 return;
             }
 
-            // Sort by timestamp (newest first)
             reviews.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
             container.innerHTML = reviews.map(review => {
