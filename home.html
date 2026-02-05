@@ -330,9 +330,6 @@
     </style>
 </head>
 <body>
-    <!-- JuicyAds PopUnders v3 Start -->
-<script type="text/javascript" src="https://js.juicyads.com/jp.php?c=4464z213y214u4r2p27413d474&u=https%3A%2F%2Fwww.juicyads.rocks"></script>
-    <!-- JuicyAds PopUnders v3 End -->
     
     <!-- Header -->
     <header class="header">
@@ -429,591 +426,593 @@
 
         <!-- Hosts Grid -->
         <div class="hosts-grid" id="hostsGrid">
-            <!-- Host cards will be generated here -->
+            <div class="loading">Loading hosts...</div>
         </div>
     </main>
 
-   <script type="module">
-    // Import Firebase modules
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
-        authDomain: "reviews-48f44.firebaseapp.com",
-        databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
-        projectId: "reviews-48f44",
-        storageBucket: "reviews-48f44.firebasestorage.app",
-        messagingSenderId: "978976687091",
-        appId: "1:978976687091:web:a9a6cdc13e6570ab598886"
-    };
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
+            authDomain: "reviews-48f44.firebaseapp.com",
+            databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
+            projectId: "reviews-48f44",
+            storageBucket: "reviews-48f44.firebasestorage.app",
+            messagingSenderId: "978976687091",
+            appId: "1:978976687091:web:a9a6cdc13e6570ab598886"
+        };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-    // Store all hosts (legacy + Firebase)
-    let allHosts = [];
-    
-    // Legacy hardcoded hosts (keep your existing array here)
-    const legacyHosts = [
-        {
-            id: 1,
-            name: "Maile Rose",
-            age: 23,
-            image: "https://images2.imgbox.com/b3/0b/2PVPNsxt_o.jpg",
-            rating: 4.7,
-            price: 590,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Blonde", 
-            breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?maile"
-        },
-        {
-            id: 2,
-            name: "Jenny Mischke",
-            age: 27,
-            image: "https://cdn.cherrynudes.com/app/uploads/galleries/giulia-wylde-has-arrived-zishy/4.jpg",
-            rating: 4.6,
-            price: 273,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?jenny"
-        },
-        {
-            id: 3,
-            name: "Pauline Sorinot",
-            age: 18,
-            image: "https://i.pinimg.com/originals/ae/07/52/ae0752b89386c05a3f16e80d664845cb.jpg",
-            rating: 4.7,
-            price: 249,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?pauline"
-        },
-        {
-            id: 4,
-            name: "Maria Martinez-Rios",
-            age: 35,
-            image: "https://cdni.pornpics.com/1280/5/101/69033315/69033315_002_59aa.jpg",
-            rating: 4.9,
-            price: 299,
-            isNew: false,
-            isHot: false,
-            isPossessed: true,
-            hair: "Blonde", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/maria-martinez.html"
-        },
-        {
-            id: 5,
-            name: "Vanessa Wilkinson",
-            age: 20,
-            image: "https://i.pinimg.com/474x/91/43/0f/91430ffd00858228af9e80dc6bfb66f6--sunderland-yo.jpg",
-            rating: 4.8,
-            price: 279,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Blonde", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?vanessa"
-        },
-        {
-            id: 6,
-            name: "Laura Myers",
-            age: 21,
-            image: "https://i.imgur.com/7uRFdy8.jpeg",
-            rating: 3.2,
-            price: 79,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?laura"
-        },
-        {
-            id: 7,
-            name: "Janet Werner",
-            age: 39,
-            image: "https://i.pinimg.com/originals/31/59/dc/3159dc224329f0191a99f0ccd95fc8e6.jpg",
-            rating: 4.6,
-            price: 179,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?janet"
-        },
-        {
-            id: 8,
-            name: "Kasha Garbedian",
-            age: 28,
-            image: "https://image.imx.to/u/i/2024/11/04/5m2bb9.jpg",
-            rating: 4.8,
-            price: 749,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Small",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?kasha"
-        },
-        {
-            id: 9,
-            name: "Erin Flanagan",
-            age: 28,
-            image: "https://i.imgur.com/PcrQ74N.jpeg",
-            rating: 4.6,
-            price: 199,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Redhead", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?erin"
-        },
-        {
-            id: 10,
-            name: "Janis Suzuki",
-            age: 37,
-            image: "https://mybigtitsbabes.com/wp-content/uploads/2014/03/Hitomi_Tanaka_Colossal_Breasts_10.jpg",
-            rating: 4.8,
-            price: 189,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?janis"
-        },
-        {
-            id: 11,
-            name: "Kelly Rupp",
-            age: 22,
-            image: "https://cdni.pornpics.com/1280/7/91/74678154/74678154_009_80d4.jpg",
-            rating: 4.9,
-            price: 319,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Small",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?kelly"
-        },
-        {
-            id: 12,
-            name: "Isabella Monez",
-            age: 22,
-            image: "https://i.imgur.com/q2SG016.jpg",
-            rating: 4.5,
-            price: 479,
-            isNew: false,
-            isHot: false,
-            isPossessed: true,
-            hair: "Brunette", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?isabella"
-        },
-        {
-            id: 13,
-            name: "Dana Yang-Phillips",
-            age: 22,
-            image: "https://images-cdn.ubuy.co.it/665171fa3367800b38005140-eva-lovia-8x10-photo-sexy-actress-girl.jpg",
-            rating: 4.4,
-            price: 129,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Small",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?dana"
-        },
-        {
-            id: 14,
-            name: "Nathalie Eastman",
-            age: 20,
-            image: "https://i.imgur.com/gRcqFPU.jpeg",
-            rating: 4.8,
-            price: 599,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?nathalie"
-        },
-        {
-            id: 15,
-            name: "Angelina Tannaro",
-            age: 24,
-            image: "https://pbs.twimg.com/media/G217PRmWoAAOkEF.jpg",
-            rating: 4.2,
-            price: 129,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Small",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?angelina"
-        },
-        {
-            id: 16,
-            name: "Celia Nordgren",
-            age: 31,
-            image: "https://i.imgur.com/Qf60brL.jpeg",
-            rating: 3.9,
-            price: 209,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Blonde", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?celia"
-        },
-        {
-            id: 17,
-            name: "Camila Melendez",
-            age: 28,
-            image: "https://www.foxhq.com/wp-content/uploads/lasirena69-sugar-daddy-brazzers/1683274959-f3ccdd27d2000e3f9255a7e3e2c48800.jpg",
-            rating: 4.7,
-            price: 209,
-            isNew: false,
-            isHot: true,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?camila"
-        },
-        {
-            id: 18,
-            name: "Jessica Valdez",
-            age: 26,
-            image: "https://images2.imgbox.com/69/54/szWhr0Ow_o.jpg",
-            rating: 4.2,
-            price: 209,
-            isNew: false,
-            isHot: false,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?jessica"
-        },
-        {
-            id: 19,
-            name: "Teddy Pereira",
-            age: 26,
-            image: "https://m.media-amazon.com/images/M/MV5BOTVhNmQ0MTEtY2UwMS00ZTcwLTk5ODMtMTBjOTAwYzJmNjExXkEyXkFqcGc@._V1_FMjpg_UY4096_.jpg",
-            rating: 4.4,
-            price: 390,
-            isNew: true,
-            isHot: false,
-            isPossessed: false,
-            hair: "Brunette", breasts: "Large",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?teddy"
-        },
-        {
-            id: 20,
-            name: "Haley Anderson",
-            age: 23,
-            image: "https://www.babepedia.com/pics/Angie%20Faith4.jpg",
-            rating: 4.1,
-            price: 550,
-            isNew: true,
-            isHot: false,
-            isPossessed: false,
-            hair: "Blonde", breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?haley"
-        },
-        {
-        id: 21,
-        name: "Taylor Meadows",
-        age: 23,
-        image: "https://i.pinimg.com/736x/c8/57/f8/c857f8f8ebbd1e7e1c2097de67a15e82.jpg",
-        rating: 4.2,
-        price: 750,
-        isNew: true,
-        isHot: false,
-        isPossessed: false,
-        hair: "Blonde", breasts: "Small",
-        profileUrl: "https://augiea.github.io/possession.com/profile.html?taylor"
-        },
-        {
-        id: 22,
-        name: "Sam Pamija",
-        age: 23,
-        image: "https://www.babepedia.com/pics/Pam%20Semija4.jpg",
-        rating: 4.4,
-        price: 99,
-        isNew: true,
-        isHot: false,
-        isPossessed: false,
-        hair: "Blonde", breasts: "Large",
-        profileUrl: "https://augiea.github.io/possession.com/profile.html?sam"
-        },
-        {
-        id: 23,
-        name: "Alexis Lake",
-        age: 24,
-        image: "https://i.redd.it/x4xj63yk511d1.jpg",
-        rating: 4.2,
-        price: 399,
-        isNew: true,
-        isHot: false,
-        isPossessed: false,
-        hair: "Blonde", breasts: "Small",
-        profileUrl: "https://augiea.github.io/possession.com/profile.html?alexis"
-        },
-        {
-            id: 24,
-            name: "Ewa Nowak",
-            age: 25,
-            image: "https://cdni.pornpics.com/1280/1/141/44025680/44025680_004_0bbb.jpg",
-            rating: 4.7,
-            price: 399,
-            isNew: true,
-            isHot: false,
-            isPossessed: false,
-            hair: "Blonde", 
-            breasts: "Huge",
-            profileUrl: "https://augiea.github.io/possession.com/profile.html?ewa"
-        }
-    ];
-
-    // Start with legacy hosts
-    allHosts = [...legacyHosts];
-
-    // Load approved hosts from Firebase
-    function loadFirebaseHosts() {
-        const hostsRef = ref(database, 'hostRequests');
-        const approvedQuery = query(hostsRef, orderByChild('approved'), equalTo(true));
+        // Store all hosts (legacy + Firebase)
+        let allHosts = [];
         
-        onValue(approvedQuery, (snapshot) => {
-            // Reset to legacy hosts
-            allHosts = [...legacyHosts];
+        // Legacy hardcoded hosts
+        const legacyHosts = [
+            {
+                id: 1,
+                name: "Maile Rose",
+                age: 23,
+                image: "https://images2.imgbox.com/b3/0b/2PVPNsxt_o.jpg",
+                rating: 4.7,
+                price: 590,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?maile"
+            },
+            {
+                id: 2,
+                name: "Jenny Mischke",
+                age: 27,
+                image: "https://cdn.cherrynudes.com/app/uploads/galleries/giulia-wylde-has-arrived-zishy/4.jpg",
+                rating: 4.6,
+                price: 273,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?jenny"
+            },
+            {
+                id: 3,
+                name: "Pauline Sorinot",
+                age: 18,
+                image: "https://i.pinimg.com/originals/ae/07/52/ae0752b89386c05a3f16e80d664845cb.jpg",
+                rating: 4.7,
+                price: 249,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?pauline"
+            },
+            {
+                id: 4,
+                name: "Maria Martinez-Rios",
+                age: 35,
+                image: "https://cdni.pornpics.com/1280/5/101/69033315/69033315_002_59aa.jpg",
+                rating: 4.9,
+                price: 299,
+                isNew: false,
+                isHot: false,
+                isPossessed: true,
+                hair: "Blonde", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/maria-martinez.html"
+            },
+            {
+                id: 5,
+                name: "Vanessa Wilkinson",
+                age: 20,
+                image: "https://i.pinimg.com/474x/91/43/0f/91430ffd00858228af9e80dc6bfb66f6--sunderland-yo.jpg",
+                rating: 4.8,
+                price: 279,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?vanessa"
+            },
+            {
+                id: 6,
+                name: "Laura Myers",
+                age: 21,
+                image: "https://i.imgur.com/7uRFdy8.jpeg",
+                rating: 3.2,
+                price: 79,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?laura"
+            },
+            {
+                id: 7,
+                name: "Janet Werner",
+                age: 39,
+                image: "https://i.pinimg.com/originals/31/59/dc/3159dc224329f0191a99f0ccd95fc8e6.jpg",
+                rating: 4.6,
+                price: 179,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?janet"
+            },
+            {
+                id: 8,
+                name: "Kasha Garbedian",
+                age: 28,
+                image: "https://image.imx.to/u/i/2024/11/04/5m2bb9.jpg",
+                rating: 4.8,
+                price: 749,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Small",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?kasha"
+            },
+            {
+                id: 9,
+                name: "Erin Flanagan",
+                age: 28,
+                image: "https://i.imgur.com/PcrQ74N.jpeg",
+                rating: 4.6,
+                price: 199,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Redhead", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?erin"
+            },
+            {
+                id: 10,
+                name: "Janis Suzuki",
+                age: 37,
+                image: "https://mybigtitsbabes.com/wp-content/uploads/2014/03/Hitomi_Tanaka_Colossal_Breasts_10.jpg",
+                rating: 4.8,
+                price: 189,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?janis"
+            },
+            {
+                id: 11,
+                name: "Kelly Rupp",
+                age: 22,
+                image: "https://cdni.pornpics.com/1280/7/91/74678154/74678154_009_80d4.jpg",
+                rating: 4.9,
+                price: 319,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Small",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?kelly"
+            },
+            {
+                id: 12,
+                name: "Isabella Monez",
+                age: 22,
+                image: "https://i.imgur.com/q2SG016.jpg",
+                rating: 4.5,
+                price: 479,
+                isNew: false,
+                isHot: false,
+                isPossessed: true,
+                hair: "Brunette", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?isabella"
+            },
+            {
+                id: 13,
+                name: "Dana Yang-Phillips",
+                age: 22,
+                image: "https://images-cdn.ubuy.co.it/665171fa3367800b38005140-eva-lovia-8x10-photo-sexy-actress-girl.jpg",
+                rating: 4.4,
+                price: 129,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Small",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?dana"
+            },
+            {
+                id: 14,
+                name: "Nathalie Eastman",
+                age: 20,
+                image: "https://i.imgur.com/gRcqFPU.jpeg",
+                rating: 4.8,
+                price: 599,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?nathalie"
+            },
+            {
+                id: 15,
+                name: "Angelina Tannaro",
+                age: 24,
+                image: "https://pbs.twimg.com/media/G217PRmWoAAOkEF.jpg",
+                rating: 4.2,
+                price: 129,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Small",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?angelina"
+            },
+            {
+                id: 16,
+                name: "Celia Nordgren",
+                age: 31,
+                image: "https://i.imgur.com/Qf60brL.jpeg",
+                rating: 3.9,
+                price: 209,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?celia"
+            },
+            {
+                id: 17,
+                name: "Camila Melendez",
+                age: 28,
+                image: "https://www.foxhq.com/wp-content/uploads/lasirena69-sugar-daddy-brazzers/1683274959-f3ccdd27d2000e3f9255a7e3e2c48800.jpg",
+                rating: 4.7,
+                price: 209,
+                isNew: false,
+                isHot: true,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?camila"
+            },
+            {
+                id: 18,
+                name: "Jessica Valdez",
+                age: 26,
+                image: "https://images2.imgbox.com/69/54/szWhr0Ow_o.jpg",
+                rating: 4.2,
+                price: 209,
+                isNew: false,
+                isHot: false,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?jessica"
+            },
+            {
+                id: 19,
+                name: "Teddy Pereira",
+                age: 26,
+                image: "https://m.media-amazon.com/images/M/MV5BOTVhNmQ0MTEtY2UwMS00ZTcwLTk5ODMtMTBjOTAwYzJmNjExXkEyXkFqcGc@._V1_FMjpg_UY4096_.jpg",
+                rating: 4.4,
+                price: 390,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                hair: "Brunette", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?teddy"
+            },
+            {
+                id: 20,
+                name: "Haley Anderson",
+                age: 23,
+                image: "https://www.babepedia.com/pics/Angie%20Faith4.jpg",
+                rating: 4.1,
+                price: 550,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?haley"
+            },
+            {
+                id: 21,
+                name: "Taylor Meadows",
+                age: 23,
+                image: "https://i.pinimg.com/736x/c8/57/f8/c857f8f8ebbd1e7e1c2097de67a15e82.jpg",
+                rating: 4.2,
+                price: 750,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Small",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?taylor"
+            },
+            {
+                id: 22,
+                name: "Sam Pamija",
+                age: 23,
+                image: "https://www.babepedia.com/pics/Pam%20Semija4.jpg",
+                rating: 4.4,
+                price: 99,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Large",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?sam"
+            },
+            {
+                id: 23,
+                name: "Alexis Lake",
+                age: 24,
+                image: "https://i.redd.it/x4xj63yk511d1.jpg",
+                rating: 4.2,
+                price: 399,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Small",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?alexis"
+            },
+            {
+                id: 24,
+                name: "Ewa Nowak",
+                age: 25,
+                image: "https://cdni.pornpics.com/1280/1/141/44025680/44025680_004_0bbb.jpg",
+                rating: 4.7,
+                price: 399,
+                isNew: true,
+                isHot: false,
+                isPossessed: false,
+                hair: "Blonde", breasts: "Huge",
+                profileUrl: "https://augiea.github.io/possession.com/profile.html?ewa"
+            }
+        ];
+
+        // Start with legacy hosts
+        allHosts = [...legacyHosts];
+
+        // Load approved hosts from Firebase
+        function loadFirebaseHosts() {
+            const hostsRef = ref(database, 'hostRequests');
+            const approvedQuery = query(hostsRef, orderByChild('approved'), equalTo(true));
             
-            // Add Firebase approved hosts
-            snapshot.forEach((childSnapshot) => {
-                const id = childSnapshot.key;
-                const host = childSnapshot.val();
+            onValue(approvedQuery, (snapshot) => {
+                // Reset to legacy hosts
+                allHosts = [...legacyHosts];
                 
-                // Convert Firebase host to display format
-                allHosts.push({
-                    id: 'firebase_' + id,
-                    name: host.name,
-                    age: host.age,
-                    image: host.images[0], // Use first image
-                    rating: host.reviews[0]?.rating || 4.5,
-                    price: host.prices['1'], // 1-hour price
-                    isNew: true, // Mark Firebase hosts as "NEW"
-                    isHot: false,
-                    isPossessed: false,
-                    hair: host.hair || "Brunette",
-                    breasts: host.breasts || "Large",
-                    profileUrl: `https://augiea.github.io/possession.com/profile.html?fb_${id}`
+                // Add Firebase approved hosts
+                snapshot.forEach((childSnapshot) => {
+                    const id = childSnapshot.key;
+                    const host = childSnapshot.val();
+                    
+                    // Convert Firebase host to display format
+                    allHosts.push({
+                        id: 'firebase_' + id,
+                        name: host.name,
+                        age: host.age,
+                        image: host.images[0], // Use first image
+                        rating: host.reviews[0]?.rating || 4.5,
+                        price: host.prices['1'], // 1-hour price
+                        isNew: true, // Mark Firebase hosts as "NEW"
+                        isHot: false,
+                        isPossessed: false,
+                        hair: host.hair || "Brunette",
+                        breasts: host.breasts || "Large",
+                        profileUrl: `https://augiea.github.io/possession.com/profile-dynamic.html?fb_${id}`
+                    });
                 });
+                
+                console.log(`Loaded ${allHosts.length} total hosts (${legacyHosts.length} legacy + ${allHosts.length - legacyHosts.length} Firebase)`);
+                
+                // Re-render with all hosts
+                renderHosts(allHosts);
+                
+            }, (error) => {
+                console.error('Error loading Firebase hosts:', error);
+                // Still show legacy hosts even if Firebase fails
+                renderHosts(allHosts);
             });
-            
-            console.log(`Loaded ${allHosts.length} total hosts (${legacyHosts.length} legacy + ${allHosts.length - legacyHosts.length} Firebase)`);
-            
-            // Re-render with all hosts
-            renderHosts(allHosts);
-            
-        }, (error) => {
-            console.error('Error loading Firebase hosts:', error);
-            // Still show legacy hosts even if Firebase fails
-            renderHosts(allHosts);
-        });
-    }
-
-    // Render hosts function (KEEP YOUR EXISTING FUNCTION, just use allHosts instead of hosts)
-    function renderHosts(hostsToRender = allHosts) {
-        const grid = document.getElementById('hostsGrid');
-        
-        if (hostsToRender.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-state" style="grid-column: 1/-1;">
-                    <h3>No hosts found</h3>
-                    <p>Try adjusting your filters</p>
-                </div>
-            `;
-            return;
         }
-    
-        const hostCards = hostsToRender.map(host => `
-            <div class="host-card" onclick="goToProfile('${host.profileUrl}')">
-                <img src="${host.image}" alt="${host.name}" class="host-image">
-                
-                <div class="host-stats">
-                    ⭐ ${host.rating}
-                </div>
-                
-                ${(host.isNew || host.isHot || host.isPossessed) ? `
-                    <div class="badges">
-                        ${host.isNew ? '<div class="badge badge-new">New</div>' : ''}
-                        ${host.isHot ? '<div class="badge badge-hot">Hot</div>' : ''}
-                        ${host.isPossessed ? '<div class="badge badge-possessed">👻 Possessed</div>' : ''}
+
+        // Render hosts
+        function renderHosts(hostsToRender = allHosts) {
+            const grid = document.getElementById('hostsGrid');
+            
+            if (hostsToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <h3>No hosts found</h3>
+                        <p>Try adjusting your filters</p>
                     </div>
-                ` : ''}
-                
-                <div class="host-overlay">
-                    <div class="host-name">${host.name}</div>
-                    <div class="host-age">${host.age} years old</div>
-                    <div class="host-price">$${host.price}/hour</div>
-                </div>
-            </div>
-        `);
-    
-        // Ad placeholders
-        const adCard1 = '<div class="ad-card ad-placeholder" data-ad-id="1106690"></div>';
-        const adCard2 = '<div class="ad-card ad-placeholder" data-ad-id="1106692"></div>';
-        const adCard3 = '<div class="ad-card ad-placeholder" data-ad-id="1106774"></div>';
-        const adCard4 = '<div class="ad-card ad-placeholder" data-ad-id="1106775"></div>';
-        
-        hostCards.splice(7, 0, adCard1);
-        hostCards.splice(12, 0, adCard2);
-        hostCards.splice(17, 0, adCard3);
-        hostCards.splice(22, 0, adCard4);
-        
-        grid.innerHTML = hostCards.join('');
-        
-        loadAds();
-    }
-    
-    // Function to load ads dynamically
-    function loadAds() {
-        const adPlaceholders = document.querySelectorAll('.ad-placeholder');
-        
-        adPlaceholders.forEach(placeholder => {
-            const adId = placeholder.getAttribute('data-ad-id');
-            
-            const ins = document.createElement('ins');
-            ins.id = adId;
-            ins.setAttribute('data-width', '258');
-            ins.setAttribute('data-height', '528');
-            
-            placeholder.appendChild(ins);
-            
-            if (window.adsbyjuicy) {
-                window.adsbyjuicy.push({'adzone': parseInt(adId)});
+                `;
+                return;
             }
-        });
-    }
-
-    // Navigation functions
-    function goToProfile(url) {
-        window.location.href = url;
-    }
-
-    function goToRequest() {
-        window.location.href = 'request.html';
-    }
-    
-    // Make goToProfile global
-    window.goToProfile = goToProfile;
-    window.goToRequest = goToRequest;
-
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filtered = allHosts.filter(host => 
-            host.name.toLowerCase().includes(searchTerm)
-        );
-        renderHosts(filtered);
-    });
-
-    // Filter functionality
-    const filters = {
-        age: 'all',
-        breasts: 'all',
-        hair: 'all',
-        availability: 'all',
-        sort: 'popular'
-    };
-
-    document.getElementById('ageFilter').addEventListener('change', (e) => {
-        filters.age = e.target.value;
-        applyFilters();
-    });
-
-    document.getElementById('breastsFilter').addEventListener('change', (e) => {
-        filters.breasts = e.target.value;
-        applyFilters();
-    });
-
-    document.getElementById('hairFilter').addEventListener('change', (e) => {
-        filters.hair = e.target.value;
-        applyFilters();
-    });
-
-    document.getElementById('availabilityFilter').addEventListener('change', (e) => {
-        filters.availability = e.target.value;
-        applyFilters();
-    });
-
-    document.getElementById('sortFilter').addEventListener('change', (e) => {
-        filters.sort = e.target.value;
-        applyFilters();
-    });
-
-    function applyFilters() {
-        let filtered = [...allHosts];
-
-        // Age filter
-        if (filters.age !== 'all') {
-            const [min, max] = filters.age.split('-').map(v => v.replace('+', ''));
-            filtered = filtered.filter(host => {
-                if (filters.age.includes('+')) {
-                    return host.age >= parseInt(min);
+        
+            const hostCards = hostsToRender.map(host => `
+                <div class="host-card" onclick="goToProfile('${host.profileUrl}')">
+                    <img src="${host.image}" alt="${host.name}" class="host-image">
+                    
+                    <div class="host-stats">
+                        ⭐ ${host.rating}
+                    </div>
+                    
+                    ${(host.isNew || host.isHot || host.isPossessed) ? `
+                        <div class="badges">
+                            ${host.isNew ? '<div class="badge badge-new">New</div>' : ''}
+                            ${host.isHot ? '<div class="badge badge-hot">Hot</div>' : ''}
+                            ${host.isPossessed ? '<div class="badge badge-possessed">👻 Possessed</div>' : ''}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="host-overlay">
+                        <div class="host-name">${host.name}</div>
+                        <div class="host-age">${host.age} years old</div>
+                        <div class="host-price">$${host.price}/hour</div>
+                    </div>
+                </div>
+            `);
+        
+            // Ad placeholders without scripts
+            const adCard1 = '<div class="ad-card ad-placeholder" data-ad-id="1106690"></div>';
+            const adCard2 = '<div class="ad-card ad-placeholder" data-ad-id="1106692"></div>';
+            const adCard3 = '<div class="ad-card ad-placeholder" data-ad-id="1106774"></div>';
+            const adCard4 = '<div class="ad-card ad-placeholder" data-ad-id="1106775"></div>';
+            
+            hostCards.splice(7, 0, adCard1);
+            hostCards.splice(12, 0, adCard2);
+            hostCards.splice(17, 0, adCard3);
+            hostCards.splice(22, 0, adCard4);
+            
+            grid.innerHTML = hostCards.join('');
+            
+            // Inject ads after DOM is ready
+            loadAds();
+        }
+        
+        // Function to load ads dynamically
+        function loadAds() {
+            const adPlaceholders = document.querySelectorAll('.ad-placeholder');
+            
+            adPlaceholders.forEach(placeholder => {
+                const adId = placeholder.getAttribute('data-ad-id');
+                
+                // Create ins element
+                const ins = document.createElement('ins');
+                ins.id = adId;
+                ins.setAttribute('data-width', '258');
+                ins.setAttribute('data-height', '528');
+                
+                placeholder.appendChild(ins);
+                
+                // Push to JuicyAds queue
+                if (window.adsbyjuicy) {
+                    window.adsbyjuicy.push({'adzone': parseInt(adId)});
                 }
-                return host.age >= parseInt(min) && host.age <= parseInt(max);
             });
         }
 
-        // Hair Color Filter
-        if (filters.hair !== 'all') {
-            filtered = filtered.filter(host => host.hair === filters.hair);
-        }
-    
-        // Breast Size Filter
-        if (filters.breasts !== 'all') {
-            filtered = filtered.filter(host => host.breasts === filters.breasts);
+        // Navigation functions
+        function goToProfile(url) {
+            window.location.href = url;
         }
 
-        // Availability filter
-        if (filters.availability !== 'all') {
-            if (filters.availability === 'available') {
-                filtered = filtered.filter(host => !host.isPossessed);
-            } else if (filters.availability === 'possessed') {
-                filtered = filtered.filter(host => host.isPossessed);
-            }
+        function goToRequest() {
+            window.location.href = 'request.html';
         }
+        
+        // Make functions global
+        window.goToProfile = goToProfile;
+        window.goToRequest = goToRequest;
 
-        // Sort
-        switch(filters.sort) {
-            case 'newest':
-                filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-                break;
-            case 'rating':
-                filtered.sort((a, b) => b.rating - a.rating);
-                break;
-            case 'popular':
-                filtered.sort((a, b) => (b.isHot ? 1 : 0) - (a.isHot ? 1 : 0));
-                break;
-            case 'price-low':
-                filtered.sort((a, b) => a.price - b.price);
-                break;
-            case 'price-high':
-                filtered.sort((a, b) => b.price - a.price);
-                break;
-        }
-
-        renderHosts(filtered);
-    }
-
-    // Load Firebase hosts on page load
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFirebaseHosts();
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = allHosts.filter(host => 
+                host.name.toLowerCase().includes(searchTerm)
+            );
+            renderHosts(filtered);
         });
-    } else {
-        loadFirebaseHosts();
-    }
-</script>
-<script type="text/javascript" data-id="juicyads-native-ads" data-ad-zone="1106084" data-targets="a" src="https://js.juicyads.com/juicyads.native-ads.min.js"></script>
+
+        // Filter functionality
+        const filters = {
+            age: 'all',
+            breasts: 'all',
+            hair: 'all',
+            availability: 'all',
+            sort: 'popular'
+        };
+
+        document.getElementById('ageFilter').addEventListener('change', (e) => {
+            filters.age = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('breastsFilter').addEventListener('change', (e) => {
+            filters.breasts = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('hairFilter').addEventListener('change', (e) => {
+            filters.hair = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('availabilityFilter').addEventListener('change', (e) => {
+            filters.availability = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('sortFilter').addEventListener('change', (e) => {
+            filters.sort = e.target.value;
+            applyFilters();
+        });
+
+        function applyFilters() {
+            let filtered = [...allHosts];
+
+            // Age filter
+            if (filters.age !== 'all') {
+                const [min, max] = filters.age.split('-').map(v => v.replace('+', ''));
+                filtered = filtered.filter(host => {
+                    if (filters.age.includes('+')) {
+                        return host.age >= parseInt(min);
+                    }
+                    return host.age >= parseInt(min) && host.age <= parseInt(max);
+                });
+            }
+
+            // Hair Color Filter
+            if (filters.hair !== 'all') {
+                filtered = filtered.filter(host => host.hair === filters.hair);
+            }
+        
+            // Breast Size Filter
+            if (filters.breasts !== 'all') {
+                filtered = filtered.filter(host => host.breasts === filters.breasts);
+            }
+
+            // Availability filter
+            if (filters.availability !== 'all') {
+                if (filters.availability === 'available') {
+                    filtered = filtered.filter(host => !host.isPossessed);
+                } else if (filters.availability === 'possessed') {
+                    filtered = filtered.filter(host => host.isPossessed);
+                }
+            }
+
+            // Sort
+            switch(filters.sort) {
+                case 'newest':
+                    filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+                    break;
+                case 'rating':
+                    filtered.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'popular':
+                    filtered.sort((a, b) => (b.isHot ? 1 : 0) - (a.isHot ? 1 : 0));
+                    break;
+                case 'price-low':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+            }
+
+            renderHosts(filtered);
+        }
+
+        // Load Firebase hosts on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                loadFirebaseHosts();
+            });
+        } else {
+            loadFirebaseHosts();
+        }
+        
+    </script>
+    <script type="text/javascript" data-id="juicyads-native-ads" data-ad-zone="1106084" data-targets="a" src="https://js.juicyads.com/juicyads.native-ads.min.js"></script>
 </body>
 </html>
