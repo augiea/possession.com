@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Possession.com - Host Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4a0080 0%, #6a00a0 100%);
+            padding: 30px;
+            border-bottom: 2px solid #8a2be2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            color: #e0b3ff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #e0b3ff;
+            text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        @media (max-width: 968px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .image-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover {
+            border-color: #8a2be2;
+            transform: scale(1.05);
+        }
+
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: rgba(40, 40, 60, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .info-card h2 {
+            color: #b08fd1;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #8a2be2;
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #9a9a9a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 1.1em;
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        .bio {
+            line-height: 1.8;
+            color: #d0d0d0;
+        }
+
+        .pricing-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .pricing-table tr {
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .pricing-table td {
+            padding: 12px 0;
+        }
+
+        .pricing-table td:first-child {
+            color: #b08fd1;
+            font-weight: 500;
+        }
+
+        .pricing-table td:last-child {
+            text-align: right;
+            color: #90ee90;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .review-section {
+            background: rgba(40, 40, 60, 0.7);
+            padding: 30px;
+            margin: 0 40px 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .review-section h2 {
+            color: #b08fd1;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .review-card {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 3px solid #8a2be2;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-author {
+            font-weight: 600;
+            color: #e0b3ff;
+        }
+
+        .review-rating {
+            color: #ffd700;
+            font-size: 1.1em;
+        }
+
+        .review-text {
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+
+        .review-date {
+            font-size: 0.85em;
+            color: #9a9a9a;
+            margin-top: 10px;
+        }
+
+        .book-button {
+            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .book-button:hover {
+            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-available {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #003320;
+        }
+
+        .status-possessed {
+            background: linear-gradient(135deg, #9d4edd 0%, #7209b7 100%);
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.5em;
+            color: #b08fd1;
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="home.html" class="back-button">←</a>
+            <h1 id="hostName">Loading...</h1>
+        </header>
+
+        <div id="profileContent" class="loading">
+            Loading profile...
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, get, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
+            authDomain: "reviews-48f44.firebaseapp.com",
+            databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
+            projectId: "reviews-48f44",
+            storageBucket: "reviews-48f44.firebasestorage.app",
+            messagingSenderId: "978976687091",
+            appId: "1:978976687091:web:a9a6cdc13e6570ab598886"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Get host ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const hostId = window.location.search.substring(1); // Everything after ?
+
+        // Check if this is a Firebase host (starts with fb_)
+        const isFirebaseHost = hostId.startsWith('fb_');
+
+        async function loadProfile() {
+            try {
+                if (isFirebaseHost) {
+                    // Load from Firebase
+                    const firebaseId = hostId.replace('fb_', '');
+                    const hostRef = ref(database, `hostRequests/${firebaseId}`);
+                    const snapshot = await get(hostRef);
+                    
+                    if (snapshot.exists()) {
+                        const hostData = snapshot.val();
+                        
+                        // Check if approved
+                        if (!hostData.approved) {
+                            showError('This host is pending approval.');
+                            return;
+                        }
+                        
+                        renderFirebaseProfile(hostData, firebaseId);
+                    } else {
+                        showError('Host not found.');
+                    }
+                } else {
+                    // Load from legacy profile-data.json
+                    const response = await fetch('profile-data.json');
+                    const data = await response.json();
+                    const host = data.profiles[hostId];
+                    
+                    if (host) {
+                        renderLegacyProfile(host, hostId);
+                    } else {
+                        showError('Host not found.');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showError('Error loading profile. Please try again.');
+            }
+        }
+
+        function renderFirebaseProfile(host, firebaseId) {
+            document.getElementById('hostName').textContent = host.name;
+            document.title = `${host.name} - Possession.com`;
+
+            const content = `
+                <div class="profile-content">
+                    <div class="image-section">
+                        <img src="${host.images[0]}" alt="${host.name}" class="main-image" id="mainImage">
+                        <div class="thumbnail-grid">
+                            ${host.images.map((img, i) => `
+                                <img src="${img}" alt="${host.name} ${i + 1}" class="thumbnail" onclick="changeMainImage('${img}')">
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="info-card">
+                            <h2>About ${host.name}</h2>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Age</span>
+                                    <span class="info-value">${host.age} years</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Height</span>
+                                    <span class="info-value">${host.height || 'N/A'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Hair</span>
+                                    <span class="info-value">${host.hair}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Breasts</span>
+                                    <span class="info-value">${host.breasts}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Ethnicity</span>
+                                    <span class="info-value">${host.ethnicity || 'N/A'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Rating</span>
+                                    <span class="info-value">⭐ ${host.reviews[0]?.rating || '5.0'}</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <span class="status-badge status-available">Available</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h2>Pricing</h2>
+                            <table class="pricing-table">
+                                <tr>
+                                    <td>1 Hour</td>
+                                    <td>$${host.prices['1']}</td>
+                                </tr>
+                                <tr>
+                                    <td>3 Hours</td>
+                                    <td>$${host.prices['3']}</td>
+                                </tr>
+                                <tr>
+                                    <td>24 Hours</td>
+                                    <td>$${host.prices['24']}</td>
+                                </tr>
+                                <tr>
+                                    <td>1 Week</td>
+                                    <td>$${host.prices['168']}</td>
+                                </tr>
+                            </table>
+                            <button class="book-button">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h2>Reviews (${host.reviews.length})</h2>
+                    <div id="reviewsContainer">
+                        ${host.reviews.map(review => `
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <span class="review-author">${review.author}</span>
+                                    <span class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</span>
+                                </div>
+                                <p class="review-text">${review.text}</p>
+                                <p class="review-date">${new Date(review.timestamp || Date.now()).toLocaleDateString()}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('profileContent').innerHTML = content;
+
+            // Load additional reviews from Firebase
+            loadFirebaseReviews(host.name);
+        }
+
+        function renderLegacyProfile(host, hostId) {
+            document.getElementById('hostName').textContent = host.name;
+            document.title = `${host.name} - Possession.com`;
+
+            const content = `
+                <div class="profile-content">
+                    <div class="image-section">
+                        <img src="${host.images[0]}" alt="${host.name}" class="main-image" id="mainImage">
+                        <div class="thumbnail-grid">
+                            ${host.images.map((img, i) => `
+                                <img src="${img}" alt="${host.name} ${i + 1}" class="thumbnail" onclick="changeMainImage('${img}')">
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="info-card">
+                            <h2>About ${host.name}</h2>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Age</span>
+                                    <span class="info-value">${host.age} years</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Height</span>
+                                    <span class="info-value">${host.height || 'N/A'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Hair</span>
+                                    <span class="info-value">${host.hair || 'N/A'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Breasts</span>
+                                    <span class="info-value">${host.breasts || 'N/A'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Ethnicity</span>
+                                    <span class="info-value">${host.ethnicity || 'N/A'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Rating</span>
+                                    <span class="info-value">⭐ ${host.rating || '5.0'}</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <span class="status-badge ${host.isPossessed ? 'status-possessed' : 'status-available'}">
+                                    ${host.isPossessed ? '👻 Currently Possessed' : 'Available'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h2>Pricing</h2>
+                            <table class="pricing-table">
+                                ${Object.entries(host.pricing || {}).map(([duration, price]) => `
+                                    <tr>
+                                        <td>${duration}</td>
+                                        <td>$${price}</td>
+                                    </tr>
+                                `).join('')}
+                            </table>
+                            <button class="book-button">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h2>Reviews</h2>
+                    <div id="reviewsContainer">
+                        ${(host.reviews || []).map(review => `
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <span class="review-author">${review.author}</span>
+                                    <span class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</span>
+                                </div>
+                                <p class="review-text">${review.text}</p>
+                                <p class="review-date">${new Date(review.timestamp || review.date || Date.now()).toLocaleDateString()}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('profileContent').innerHTML = content;
+
+            // Load additional reviews from Firebase
+            loadFirebaseReviews(host.name);
+        }
+
+        function loadFirebaseReviews(hostName) {
+            const reviewsRef = ref(database, 'reviews');
+            const approvedQuery = query(reviewsRef, orderByChild('approved'), equalTo(true));
+
+            onValue(approvedQuery, (snapshot) => {
+                const firebaseReviews = [];
+                snapshot.forEach((childSnapshot) => {
+                    const review = childSnapshot.val();
+                    if (review.hostName === hostName) {
+                        firebaseReviews.push(review);
+                    }
+                });
+
+                if (firebaseReviews.length > 0) {
+                    const container = document.getElementById('reviewsContainer');
+                    const firebaseReviewsHTML = firebaseReviews.map(review => `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-author">${review.reviewerName}</span>
+                                <span class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</span>
+                            </div>
+                            <p class="review-text">${review.reviewText}</p>
+                            <p class="review-date">${new Date(review.timestamp).toLocaleDateString()}</p>
+                        </div>
+                    `).join('');
+                    
+                    container.innerHTML += firebaseReviewsHTML;
+                }
+            });
+        }
+
+        function showError(message) {
+            document.getElementById('hostName').textContent = 'Error';
+            document.getElementById('profileContent').innerHTML = `
+                <div class="error">
+                    <h2>${message}</h2>
+                    <p><a href="home.html" style="color: #8a2be2;">Return to home</a></p>
+                </div>
+            `;
+        }
+
+        // Make changeMainImage global
+        window.changeMainImage = function(src) {
+            document.getElementById('mainImage').src = src;
+        };
+
+        // Load profile on page load
+        loadProfile();
+    </script>
+</body>
+</html>
