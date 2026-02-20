@@ -371,6 +371,72 @@
             document.getElementById('hostName').textContent = host.name;
             document.title = `${host.name} - Possession.com`;
 
+            // Build info items dynamically - only show fields that exist
+            let infoItems = '';
+            
+            // Always show age
+            infoItems += `
+                <div class="info-item">
+                    <span class="info-label">Age</span>
+                    <span class="info-value">${host.age} years</span>
+                </div>
+            `;
+            
+            // Only show other fields if they exist and aren't empty/null/undefined
+            if (host.height) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Height</span>
+                        <span class="info-value">${host.height}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.hair) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Hair</span>
+                        <span class="info-value">${host.hair}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.breasts) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Breasts</span>
+                        <span class="info-value">${host.breasts}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.ethnicity) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Ethnicity</span>
+                        <span class="info-value">${host.ethnicity}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.weight) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Weight</span>
+                        <span class="info-value">${host.weight}</span>
+                    </div>
+                `;
+            }
+            
+            // Always show rating
+            const rating = host.reviews[0]?.rating || 5.0;
+            infoItems += `
+                <div class="info-item">
+                    <span class="info-label">Rating</span>
+                    <span class="info-value">⭐ ${rating}</span>
+                </div>
+            `;
+
             const content = `
                 <div class="profile-content">
                     <div class="image-section">
@@ -386,30 +452,7 @@
                         <div class="info-card">
                             <h2>About ${host.name}</h2>
                             <div class="info-grid">
-                                <div class="info-item">
-                                    <span class="info-label">Age</span>
-                                    <span class="info-value">${host.age} years</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Height</span>
-                                    <span class="info-value">${host.height || 'N/A'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Hair</span>
-                                    <span class="info-value">${host.hair}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Breasts</span>
-                                    <span class="info-value">${host.breasts}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Ethnicity</span>
-                                    <span class="info-value">${host.ethnicity || 'N/A'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Rating</span>
-                                    <span class="info-value">⭐ ${host.reviews[0]?.rating || '5.0'}</span>
-                                </div>
+                                ${infoItems}
                             </div>
                             <div style="margin-top: 20px;">
                                 <span class="status-badge status-available">Available</span>
@@ -468,6 +511,72 @@
             document.getElementById('hostName').textContent = host.name;
             document.title = `${host.name} - Possession.com`;
 
+            // Build info items dynamically - only show fields that exist
+            let infoItems = '';
+            
+            if (host.age) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Age</span>
+                        <span class="info-value">${host.age} years</span>
+                    </div>
+                `;
+            }
+            
+            if (host.height) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Height</span>
+                        <span class="info-value">${host.height}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.hair) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Hair</span>
+                        <span class="info-value">${host.hair}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.breasts) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Breasts</span>
+                        <span class="info-value">${host.breasts}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.ethnicity) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Ethnicity</span>
+                        <span class="info-value">${host.ethnicity}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.weight) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Weight</span>
+                        <span class="info-value">${host.weight}</span>
+                    </div>
+                `;
+            }
+            
+            if (host.rating) {
+                infoItems += `
+                    <div class="info-item">
+                        <span class="info-label">Rating</span>
+                        <span class="info-value">⭐ ${host.rating}</span>
+                    </div>
+                `;
+            }
+
             const content = `
                 <div class="profile-content">
                     <div class="image-section">
@@ -483,30 +592,7 @@
                         <div class="info-card">
                             <h2>About ${host.name}</h2>
                             <div class="info-grid">
-                                <div class="info-item">
-                                    <span class="info-label">Age</span>
-                                    <span class="info-value">${host.age} years</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Height</span>
-                                    <span class="info-value">${host.height || 'N/A'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Hair</span>
-                                    <span class="info-value">${host.hair || 'N/A'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Breasts</span>
-                                    <span class="info-value">${host.breasts || 'N/A'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Ethnicity</span>
-                                    <span class="info-value">${host.ethnicity || 'N/A'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Rating</span>
-                                    <span class="info-value">⭐ ${host.rating || '5.0'}</span>
-                                </div>
+                                ${infoItems}
                             </div>
                             <div style="margin-top: 20px;">
                                 <span class="status-badge ${host.isPossessed ? 'status-possessed' : 'status-available'}">
