@@ -4,7 +4,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Possession.com - Host Profile</title>
+    <title>👻 Possession.com</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
             color: #e0e0e0;
             min-height: 100vh;
@@ -21,190 +21,114 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: rgba(20, 20, 40, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
-            overflow: hidden;
         }
 
         header {
-            background: linear-gradient(90deg, #4a0080 0%, #6a00a0 100%);
-            padding: 30px;
-            border-bottom: 2px solid #8a2be2;
+            background: rgba(20, 20, 40, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-bottom: none;
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
+            gap: 15px;
         }
 
-        .back-button {
-            position: absolute;
-            left: 30px;
-            font-size: 2em;
-            color: #e0b3ff;
-            cursor: pointer;
-            transition: all 0.3s;
+        .back-btn {
+            font-size: 24px;
             text-decoration: none;
+            color: #e0b3ff;
+            transition: transform 0.2s;
         }
 
-        .back-button:hover {
-            color: #ffffff;
-            transform: scale(1.1);
+        .back-btn:hover {
+            transform: scale(1.2);
         }
 
         h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             color: #e0b3ff;
-            text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
         }
 
-        .profile-content {
+        .content {
+            background: rgba(20, 20, 40, 0.95);
+            padding: 30px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 0 0 15px 15px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #b08fd1;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .gallery {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        @media (max-width: 968px) {
-            .profile-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .image-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .main-image {
+        .gallery img {
             width: 100%;
             aspect-ratio: 3/4;
             object-fit: cover;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
-        }
-
-        .thumbnail-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .thumbnail {
-            width: 100%;
-            aspect-ratio: 3/4;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
+            border: 2px solid rgba(138, 43, 226, 0.3);
             transition: all 0.3s;
-            border: 2px solid transparent;
+            cursor: pointer;
         }
 
-        .thumbnail:hover {
+        .gallery img:hover {
             border-color: #8a2be2;
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
         }
 
-        .info-section {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .info-card {
-            background: rgba(40, 40, 60, 0.7);
-            padding: 20px;
+        .info-item {
+            background: rgba(40, 40, 60, 0.6);
+            padding: 15px;
             border-radius: 10px;
             border: 1px solid rgba(138, 43, 226, 0.3);
         }
 
-        .info-card h2 {
-            color: #b08fd1;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            border-bottom: 2px solid #8a2be2;
-            padding-bottom: 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
         .info-label {
-            font-size: 0.85em;
             color: #9a9a9a;
+            font-size: 0.9em;
+            margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .info-value {
-            font-size: 1.1em;
             color: #e0e0e0;
+            font-size: 1.3em;
             font-weight: 600;
         }
 
-        .bio {
-            line-height: 1.8;
-            color: #d0d0d0;
-        }
-
-        .pricing-table {
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .pricing-table tr {
-            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
-        }
-
-        .pricing-table td {
-            padding: 12px 0;
-        }
-
-        .pricing-table td:first-child {
-            color: #b08fd1;
-            font-weight: 500;
-        }
-
-        .pricing-table td:last-child {
-            text-align: right;
-            color: #90ee90;
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .review-section {
-            background: rgba(40, 40, 60, 0.7);
-            padding: 30px;
-            margin: 0 40px 40px;
-            border-radius: 10px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-        }
-
-        .review-section h2 {
-            color: #b08fd1;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
         .review-card {
-            background: rgba(30, 30, 50, 0.7);
+            background: rgba(40, 40, 60, 0.6);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
+            border-left: 4px solid #8a2be2;
             margin-bottom: 15px;
-            border-left: 3px solid #8a2be2;
         }
 
         .review-header {
@@ -215,64 +139,196 @@
         }
 
         .review-author {
-            font-weight: 600;
             color: #e0b3ff;
+            font-weight: 600;
+            font-size: 1.1em;
         }
 
         .review-rating {
             color: #ffd700;
-            font-size: 1.1em;
+            font-size: 1.2em;
         }
 
         .review-text {
             color: #d0d0d0;
             line-height: 1.6;
+            margin-bottom: 10px;
         }
 
         .review-date {
-            font-size: 0.85em;
             color: #9a9a9a;
-            margin-top: 10px;
+            font-size: 0.85em;
         }
 
-        .book-button {
+        .write-review-btn {
+            display: inline-block;
             background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
             color: white;
-            padding: 15px 40px;
-            border: none;
+            padding: 12px 30px;
             border-radius: 8px;
-            font-size: 1.2em;
+            text-decoration: none;
             font-weight: 600;
-            cursor: pointer;
+            margin-top: 15px;
             transition: all 0.3s;
-            width: 100%;
-            margin-top: 10px;
         }
 
-        .book-button:hover {
+        .write-review-btn:hover {
             background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
             transform: translateY(-2px);
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
+        .booking-form {
+            background: rgba(40, 40, 60, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #b08fd1;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        select, input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(20, 20, 40, 0.9);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: rgba(30, 30, 50, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            background: rgba(40, 40, 60, 0.8);
+            border-color: rgba(138, 43, 226, 0.5);
+        }
+
+        .radio-option input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .addon-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(30, 30, 50, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .addon-option:hover {
+            background: rgba(40, 40, 60, 0.8);
+            border-color: rgba(138, 43, 226, 0.5);
+        }
+
+        .addon-content {
+            flex: 1;
+        }
+
+        .addon-title {
+            color: #e0b3ff;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .addon-description {
+            color: #b0b0b0;
             font-size: 0.9em;
+        }
+
+        .total-cost {
+            background: linear-gradient(135deg, #4a0080 0%, #6a00a0 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .total-label {
+            color: #b08fd1;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .total-amount {
+            color: #90ee90;
+            font-size: 2.5em;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .status-available {
-            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
-            color: #003320;
-        }
-
-        .status-possessed {
-            background: linear-gradient(135deg, #9d4edd 0%, #7209b7 100%);
+        .possess-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
+            border: none;
+            border-radius: 10px;
             color: white;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .possess-btn:hover {
+            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+            transform: translateY(-3px);
+        }
+
+        .warning {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #ffb3b3;
+            font-size: 0.9em;
+            line-height: 1.6;
         }
 
         .loading {
@@ -292,12 +348,12 @@
 <body>
     <div class="container">
         <header>
-            <a href="home.html" class="back-button">←</a>
-            <h1 id="hostName">Loading...</h1>
+            <a href="home.html" class="back-btn" title="Back to Home">←</a>
+            <h1 id="pageTitle">👻 Possession.com</h1>
         </header>
 
-        <div id="profileContent" class="loading">
-            Loading profile...
+        <div class="content" id="mainContent">
+            <div class="loading">Loading profile...</div>
         </div>
     </div>
 
@@ -321,17 +377,16 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Get host ID from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const hostId = window.location.search.substring(1); // Everything after ?
-
-        // Check if this is a Firebase host (starts with fb_)
+        // Get host ID from URL
+        const hostId = window.location.search.substring(1);
         const isFirebaseHost = hostId.startsWith('fb_');
+
+        // Pricing data
+        let pricingData = {};
 
         async function loadProfile() {
             try {
                 if (isFirebaseHost) {
-                    // Load from Firebase
                     const firebaseId = hostId.replace('fb_', '');
                     const hostRef = ref(database, `hostRequests/${firebaseId}`);
                     const snapshot = await get(hostRef);
@@ -339,24 +394,22 @@
                     if (snapshot.exists()) {
                         const hostData = snapshot.val();
                         
-                        // Check if approved
                         if (!hostData.approved) {
                             showError('This host is pending approval.');
                             return;
                         }
                         
-                        renderFirebaseProfile(hostData, firebaseId);
+                        renderProfile(hostData);
                     } else {
                         showError('Host not found.');
                     }
                 } else {
-                    // Load from legacy profile-data.json
                     const response = await fetch('profile-data.json');
                     const data = await response.json();
                     const host = data.profiles[hostId];
                     
                     if (host) {
-                        renderLegacyProfile(host, hostId);
+                        renderProfile(host, true);
                     } else {
                         showError('Host not found.');
                     }
@@ -367,276 +420,208 @@
             }
         }
 
-        function renderFirebaseProfile(host, firebaseId) {
-            document.getElementById('hostName').textContent = host.name;
-            document.title = `${host.name} - Possession.com`;
-
-            // Build info items dynamically - only show fields that exist
-            let infoItems = '';
+        function renderProfile(host, isLegacy = false) {
+            document.title = `👻 Possession.com - ${host.name}`;
             
-            // Always show age
-            infoItems += `
-                <div class="info-item">
-                    <span class="info-label">Age</span>
-                    <span class="info-value">${host.age} years</span>
-                </div>
-            `;
-            
-            // Only show other fields if they exist and aren't empty/null/undefined
-            if (host.height) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Height</span>
-                        <span class="info-value">${host.height}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.hair) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Hair</span>
-                        <span class="info-value">${host.hair}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.breasts) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Breasts</span>
-                        <span class="info-value">${host.breasts}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.ethnicity) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Ethnicity</span>
-                        <span class="info-value">${host.ethnicity}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.weight) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Weight</span>
-                        <span class="info-value">${host.weight}</span>
-                    </div>
-                `;
-            }
-            
-            // Always show rating
-            const rating = host.reviews[0]?.rating || 5.0;
-            infoItems += `
-                <div class="info-item">
-                    <span class="info-label">Rating</span>
-                    <span class="info-value">⭐ ${rating}</span>
-                </div>
-            `;
-
-            const content = `
-                <div class="profile-content">
-                    <div class="image-section">
-                        <img src="${host.images[0]}" alt="${host.name}" class="main-image" id="mainImage">
-                        <div class="thumbnail-grid">
-                            ${host.images.map((img, i) => `
-                                <img src="${img}" alt="${host.name} ${i + 1}" class="thumbnail" onclick="changeMainImage('${img}')">
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <div class="info-section">
-                        <div class="info-card">
-                            <h2>About ${host.name}</h2>
-                            <div class="info-grid">
-                                ${infoItems}
-                            </div>
-                            <div style="margin-top: 20px;">
-                                <span class="status-badge status-available">Available</span>
-                            </div>
-                        </div>
-
-                        <div class="info-card">
-                            <h2>Pricing</h2>
-                            <table class="pricing-table">
-                                <tr>
-                                    <td>1 Hour</td>
-                                    <td>$${host.prices['1']}</td>
-                                </tr>
-                                <tr>
-                                    <td>3 Hours</td>
-                                    <td>$${host.prices['3']}</td>
-                                </tr>
-                                <tr>
-                                    <td>24 Hours</td>
-                                    <td>$${host.prices['24']}</td>
-                                </tr>
-                                <tr>
-                                    <td>1 Week</td>
-                                    <td>$${host.prices['168']}</td>
-                                </tr>
-                            </table>
-                            <button class="book-button">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="review-section">
-                    <h2>Reviews (${host.reviews.length})</h2>
-                    <div id="reviewsContainer">
-                        ${host.reviews.map(review => `
-                            <div class="review-card">
-                                <div class="review-header">
-                                    <span class="review-author">${review.author}</span>
-                                    <span class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</span>
-                                </div>
-                                <p class="review-text">${review.text}</p>
-                                <p class="review-date">${new Date(review.timestamp || Date.now()).toLocaleDateString()}</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('profileContent').innerHTML = content;
-
-            // Load additional reviews from Firebase
-            loadFirebaseReviews(host.name);
-        }
-
-        function renderLegacyProfile(host, hostId) {
-            document.getElementById('hostName').textContent = host.name;
-            document.title = `${host.name} - Possession.com`;
-
-            // Build info items dynamically - only show fields that exist
-            let infoItems = '';
+            // Build profile info items dynamically
+            let profileItems = '';
             
             if (host.age) {
-                infoItems += `
+                profileItems += `
                     <div class="info-item">
-                        <span class="info-label">Age</span>
-                        <span class="info-value">${host.age} years</span>
+                        <div class="info-label">Age</div>
+                        <div class="info-value">${host.age} years</div>
                     </div>
                 `;
             }
             
             if (host.height) {
-                infoItems += `
+                profileItems += `
                     <div class="info-item">
-                        <span class="info-label">Height</span>
-                        <span class="info-value">${host.height}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.hair) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Hair</span>
-                        <span class="info-value">${host.hair}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.breasts) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Breasts</span>
-                        <span class="info-value">${host.breasts}</span>
-                    </div>
-                `;
-            }
-            
-            if (host.ethnicity) {
-                infoItems += `
-                    <div class="info-item">
-                        <span class="info-label">Ethnicity</span>
-                        <span class="info-value">${host.ethnicity}</span>
+                        <div class="info-label">Height</div>
+                        <div class="info-value">${host.height}</div>
                     </div>
                 `;
             }
             
             if (host.weight) {
-                infoItems += `
+                profileItems += `
                     <div class="info-item">
-                        <span class="info-label">Weight</span>
-                        <span class="info-value">${host.weight}</span>
+                        <div class="info-label">Weight</div>
+                        <div class="info-value">${host.weight}</div>
                     </div>
                 `;
             }
             
-            if (host.rating) {
-                infoItems += `
+            if (host.hair) {
+                profileItems += `
                     <div class="info-item">
-                        <span class="info-label">Rating</span>
-                        <span class="info-value">⭐ ${host.rating}</span>
+                        <div class="info-label">Hair</div>
+                        <div class="info-value">${host.hair}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.breasts) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Breasts</div>
+                        <div class="info-value">${host.breasts}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.ethnicity) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Ethnicity</div>
+                        <div class="info-value">${host.ethnicity}</div>
                     </div>
                 `;
             }
 
-            const content = `
-                <div class="profile-content">
-                    <div class="image-section">
-                        <img src="${host.images[0]}" alt="${host.name}" class="main-image" id="mainImage">
-                        <div class="thumbnail-grid">
-                            ${host.images.map((img, i) => `
-                                <img src="${img}" alt="${host.name} ${i + 1}" class="thumbnail" onclick="changeMainImage('${img}')">
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <div class="info-section">
-                        <div class="info-card">
-                            <h2>About ${host.name}</h2>
-                            <div class="info-grid">
-                                ${infoItems}
-                            </div>
-                            <div style="margin-top: 20px;">
-                                <span class="status-badge ${host.isPossessed ? 'status-possessed' : 'status-available'}">
-                                    ${host.isPossessed ? '👻 Currently Possessed' : 'Available'}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="info-card">
-                            <h2>Pricing</h2>
-                            <table class="pricing-table">
-                                ${Object.entries(host.pricing || {}).map(([duration, price]) => `
-                                    <tr>
-                                        <td>${duration}</td>
-                                        <td>$${price}</td>
-                                    </tr>
-                                `).join('')}
-                            </table>
-                            <button class="book-button">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="review-section">
-                    <h2>Reviews</h2>
-                    <div id="reviewsContainer">
-                        ${(host.reviews || []).map(review => `
-                            <div class="review-card">
-                                <div class="review-header">
-                                    <span class="review-author">${review.author}</span>
-                                    <span class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</span>
-                                </div>
-                                <p class="review-text">${review.text}</p>
-                                <p class="review-date">${new Date(review.timestamp || review.date || Date.now()).toLocaleDateString()}</p>
-                            </div>
-                        `).join('')}
-                    </div>
+            // Rating
+            const rating = isLegacy ? (host.rating || 5.0) : (host.reviews[0]?.rating || 5.0);
+            profileItems += `
+                <div class="info-item">
+                    <div class="info-label">Rating</div>
+                    <div class="info-value">⭐ ${rating}</div>
                 </div>
             `;
 
-            document.getElementById('profileContent').innerHTML = content;
+            // Set pricing data for calculator
+            if (isLegacy) {
+                // Legacy format: { "1 Hour": 299, "3 Hours": 799, ... }
+                pricingData = host.pricing || {};
+            } else {
+                // Firebase format: { "1": 299, "3": 799, "24": 2499, "168": 14999 }
+                pricingData = {
+                    "1 Hour": host.prices['1'] || 0,
+                    "3 Hours": host.prices['3'] || 0,
+                    "24 Hours": host.prices['24'] || 0,
+                    "1 Week": host.prices['168'] || 0
+                };
+            }
 
-            // Load additional reviews from Firebase
-            loadFirebaseReviews(host.name);
+            // Build reviews
+            let reviewsHTML = '';
+            const reviews = isLegacy ? (host.reviews || []) : (host.reviews || []);
+            
+            reviews.forEach(review => {
+                const author = review.author || review.reviewerName || 'Anonymous';
+                const text = review.text || review.reviewText || '';
+                const reviewRating = review.rating || 5;
+                const timestamp = review.timestamp || review.date || Date.now();
+                
+                reviewsHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-author">${author}</div>
+                            <div class="review-rating">${'⭐'.repeat(Math.round(reviewRating))}</div>
+                        </div>
+                        <div class="review-text">${text}</div>
+                        <div class="review-date">${new Date(timestamp).toLocaleDateString()}</div>
+                    </div>
+                `;
+            });
+
+            const content = `
+                <section>
+                    <h2>📸 Host Gallery</h2>
+                    <div class="gallery">
+                        ${host.images.map(img => `<img src="${img}" alt="${host.name}">`).join('')}
+                    </div>
+                </section>
+
+                <section>
+                    <h2>📋 Host Profile</h2>
+                    <div class="profile-info">
+                        ${profileItems}
+                    </div>
+                </section>
+
+                <section>
+                    <h2>⭐ User Reviews</h2>
+                    <div id="reviewsContainer">${reviewsHTML}</div>
+                    <a href="submit-review.html" class="write-review-btn">✍️ Write a Review</a>
+                </section>
+
+                <section>
+                    <h2>🎯 Possession Options</h2>
+                    <div class="booking-form">
+                        <div class="form-group">
+                            <label>Duration:</label>
+                            <select id="duration" onchange="updateTotal()">
+                                ${Object.keys(pricingData).map(duration => 
+                                    `<option value="${duration}">${duration} - $${pricingData[duration]}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Preferred Start Time:</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="immediate" name="startTime" value="immediate" checked>
+                                    <label for="immediate">Immediate: Possess right now</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="morning" name="startTime" value="morning">
+                                    <label for="morning">Morning (6AM-12PM)</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="afternoon" name="startTime" value="afternoon">
+                                    <label for="afternoon">Afternoon (12PM-6PM)</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="evening" name="startTime" value="evening">
+                                    <label for="evening">Evening (6PM-12AM)</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="night" name="startTime" value="night">
+                                    <label for="night">Night (12AM-6AM)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="addon-option">
+                                <input type="checkbox" id="memoryPackage" onchange="updateTotal()">
+                                <div class="addon-content">
+                                    <div class="addon-title">Include Full Memory Package (+$1,500)</div>
+                                    <div class="addon-description">Access to complete memories, skills, and personality nuances</div>
+                                </div>
+                            </div>
+
+                            <div class="addon-option">
+                                <input type="checkbox" id="insurance" onchange="updateTotal()">
+                                <div class="addon-content">
+                                    <div class="addon-title">Possession Insurance (+$499)</div>
+                                    <div class="addon-description">Protection against unexpected host resistance or early termination</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="total-cost">
+                            <div class="total-label">Total Cost:</div>
+                            <div class="total-amount" id="totalCost">$${Object.values(pricingData)[0]}</div>
+                        </div>
+
+                        <button class="possess-btn">👻 INITIATE POSSESSION</button>
+
+                        <div class="warning">
+                            ⚠️ <strong>Warning:</strong> All possessions are subject to our Terms of Service. Host consciousness will be temporarily suspended. Any actions taken during possession are the responsibility of the possessing entity. Memories created during possession will be retained by the host upon session completion.
+                        </div>
+                    </div>
+                </section>
+            `;
+
+            document.getElementById('mainContent').innerHTML = content;
+
+            // Load additional Firebase reviews
+            if (isLegacy || !isLegacy) {
+                loadFirebaseReviews(host.name);
+            }
         }
 
         function loadFirebaseReviews(hostName) {
@@ -657,11 +642,11 @@
                     const firebaseReviewsHTML = firebaseReviews.map(review => `
                         <div class="review-card">
                             <div class="review-header">
-                                <span class="review-author">${review.reviewerName}</span>
-                                <span class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</span>
+                                <div class="review-author">${review.reviewerName}</div>
+                                <div class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</div>
                             </div>
-                            <p class="review-text">${review.reviewText}</p>
-                            <p class="review-date">${new Date(review.timestamp).toLocaleDateString()}</p>
+                            <div class="review-text">${review.reviewText}</div>
+                            <div class="review-date">${new Date(review.timestamp).toLocaleDateString()}</div>
                         </div>
                     `).join('');
                     
@@ -671,8 +656,7 @@
         }
 
         function showError(message) {
-            document.getElementById('hostName').textContent = 'Error';
-            document.getElementById('profileContent').innerHTML = `
+            document.getElementById('mainContent').innerHTML = `
                 <div class="error">
                     <h2>${message}</h2>
                     <p><a href="home.html" style="color: #8a2be2;">Return to home</a></p>
@@ -680,9 +664,17 @@
             `;
         }
 
-        // Make changeMainImage global
-        window.changeMainImage = function(src) {
-            document.getElementById('mainImage').src = src;
+        // Make updateTotal global
+        window.updateTotal = function() {
+            const duration = document.getElementById('duration').value;
+            const memoryPackage = document.getElementById('memoryPackage').checked;
+            const insurance = document.getElementById('insurance').checked;
+
+            let total = pricingData[duration] || 0;
+            if (memoryPackage) total += 1500;
+            if (insurance) total += 499;
+
+            document.getElementById('totalCost').textContent = `$${total.toLocaleString()}`;
         };
 
         // Load profile on page load
