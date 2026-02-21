@@ -1,727 +1,652 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Possession.com - Host Profile</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Possession.com — Host Profile</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Profile-page specific styles ─────────── */
 
-        body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .gallery-item {
+      aspect-ratio: 3 / 4;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--purple-border);
+      background: var(--bg-input);
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .gallery-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 30px var(--purple-glow);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-style: italic;
+      font-size: 0.88em;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(20, 20, 40, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
-            overflow: hidden;
-        }
+    /* Profile stats grid */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .profile-item {
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--purple-mid);
+    }
+    .profile-label {
+      display: block;
+      color: var(--text-dim);
+      font-size: 0.78em;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .profile-value {
+      color: var(--text-primary);
+      font-size: 1em;
+    }
 
-        header {
-            background: linear-gradient(90deg, #4a0080 0%, #6a00a0 100%);
-            padding: 30px;
-            border-bottom: 2px solid #8a2be2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+    /* Reviews */
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-        .back-button {
-            position: absolute;
-            left: 30px;
-            font-size: 2em;
-            color: #e0b3ff;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
+    /* Pricing panel */
+    .pricing-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--purple-border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+    }
+    .pricing-panel .card-title { margin-bottom: 24px; }
 
-        .back-button:hover {
-            color: #fff;
-            transform: translateX(-5px);
-        }
+    .option-row {
+      margin-bottom: 22px;
+    }
+    .option-row label { margin-bottom: 8px; }
 
-        h1 {
-            color: #e0b3ff;
-            font-size: 2.5em;
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
-            cursor: pointer;
-            transition: color 0.3s;
-        }
+    .add-on-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .add-on-item {
+      background: var(--bg-input);
+      border: 1px solid var(--purple-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      transition: border-color var(--transition);
+    }
+    .add-on-item:has(input:checked) { border-color: var(--purple-mid); }
+    .add-on-desc {
+      color: var(--text-dim);
+      font-size: 0.83em;
+      margin-top: 5px;
+      padding-left: 30px;
+    }
 
-        h1:hover {
-            color: #fff;
-        }
+    .total-box {
+      background: var(--bg-input);
+      border: 1px solid var(--purple-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      margin: 24px 0;
+    }
+    .total-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .total-amount {
+      font-family: 'Cinzel', serif;
+      font-size: 2.4em;
+      font-weight: 700;
+      color: var(--accent-green);
+      text-shadow: 0 0 20px rgba(110, 231, 183, 0.3);
+    }
 
-        .tagline {
-            color: #c0c0c0;
-            font-style: italic;
-            margin-top: 10px;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .gallery {
-            margin-bottom: 40px;
-        }
-
-        .gallery h2 {
-            color: #e0b3ff;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #8a2be2;
-            padding-bottom: 10px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            aspect-ratio: 3/4;
-            background: linear-gradient(135deg, #2a2a4a 0%, #3a3a5a 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #6a00a0;
-            transition: all 0.3s;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
-        }
-
-        .gallery-placeholder {
-            color: #8a8a8a;
-            text-align: center;
-        }
-
-        .profile-section {
-            margin-bottom: 40px;
-            background: rgba(40, 40, 60, 0.5);
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #6a00a0;
-        }
-
-        .profile-section h2 {
-            color: #e0b3ff;
-            margin-bottom: 20px;
-        }
-
-        .profile-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .profile-item {
-            padding: 15px;
-            background: rgba(30, 30, 50, 0.7);
-            border-radius: 8px;
-            border-left: 3px solid #8a2be2;
-        }
-
-        .profile-label {
-            color: #b08fd1;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .profile-value {
-            color: #e0e0e0;
-        }
-
-        .reviews-section {
-            margin-bottom: 40px;
-        }
-
-        .reviews-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .add-review-btn {
-            padding: 10px 20px;
-            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .add-review-btn:hover {
-            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
-        }
-
-        .review {
-            background: rgba(40, 40, 60, 0.5);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #8a2be2;
-        }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .review-user {
-            color: #b08fd1;
-            font-weight: bold;
-        }
-
-        .review-rating {
-            color: #ffd700;
-        }
-
-        .review-text {
-            color: #d0d0d0;
-            line-height: 1.6;
-        }
-
-        .review-date {
-            color: #888;
-            font-size: 0.85em;
-            margin-top: 10px;
-        }
-
-        .no-reviews {
-            text-align: center;
-            padding: 40px;
-            color: #888;
-            font-style: italic;
-        }
-
-        .loading-reviews {
-            text-align: center;
-            padding: 20px;
-            color: #b08fd1;
-        }
-
-        .options-section {
-            background: rgba(40, 40, 60, 0.7);
-            padding: 30px;
-            border-radius: 10px;
-            border: 2px solid #8a2be2;
-        }
-
-        .option-group {
-            margin-bottom: 25px;
-        }
-
-        .option-group label {
-            display: block;
-            color: #b08fd1;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        select, input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            background: rgba(30, 30, 50, 0.9);
-            border: 1px solid #6a00a0;
-            border-radius: 5px;
-            color: #e0e0e0;
-            font-size: 16px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .price-info {
-            color: #90ee90;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .total-cost {
-            background: rgba(60, 60, 80, 0.7);
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .total-cost h3 {
-            color: #e0b3ff;
-            margin-bottom: 10px;
-        }
-
-        .total-amount {
-            font-size: 2em;
-            color: #90ee90;
-            font-weight: bold;
-        }
-
-        .possess-button {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 1.5em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .possess-button:hover {
-            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
-            transform: translateY(-2px);
-        }
-
-        .possess-button:active {
-            transform: translateY(0);
-        }
-
-        .warning {
-            background: rgba(139, 0, 0, 0.3);
-            border: 1px solid #8b0000;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            color: #ffb3b3;
-            font-size: 0.9em;
-        }
-    </style>
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 4000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      font-size: 2em;
+      color: #fff;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity var(--transition);
+    }
+    .lightbox-close:hover { opacity: 1; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <a href="https://augiea.github.io/possession.com/home.html" class="back-button" title="Back to Home">←</a>
-            <h1 onclick="window.location.href='https://augiea.github.io/possession.com/home.html'">👻 Possession.com</h1>
-        </header>
 
-        <div class="content">
-            <!-- Gallery Section -->
-            <div class="gallery">
-                <h2>📸 Host Gallery</h2>
-                <div class="gallery-grid">
-                    <!-- Images will be loaded from JSON -->
-                </div>
-            </div>
-
-            <!-- Profile Section -->
-            <div class="profile-section">
-                <h2>📋 Host Profile</h2>
-                <div class="profile-grid">
-                    <!-- Profile data will be loaded from JSON -->
-                </div>
-            </div>
-
-            <!-- Reviews Section -->
-            <div class="reviews-section profile-section">
-                <div class="reviews-header">
-                    <h2>⭐ User Reviews</h2>
-                    <a href="submit-review.html" class="add-review-btn">✍️ Write a Review</a>
-                </div>
-                <div id="reviewsContainer">
-                    <div class="loading-reviews">Loading reviews...</div>
-                </div>
-            </div>
-
-            <!-- Possession Options -->
-            <div class="options-section">
-                <h2>🎯 Possession Options</h2>
-                
-                <div class="option-group">
-                    <label for="duration">Duration:</label>
-                    <select id="duration">
-                        <!-- Prices will be loaded from JSON -->
-                    </select>
-                </div>
-
-                <div class="option-group">
-                    <label for="time">Preferred Start Time:</label>
-                    <select id="time">
-                        <option value="immediate">Immediate: Possess right now</option>
-                        <option value="morning">Morning (6AM-12PM)</option>
-                        <option value="afternoon">Afternoon (12PM-6PM)</option>
-                        <option value="evening">Evening (6PM-12AM)</option>
-                        <option value="night">Night (12AM-6AM)</option>
-                    </select>
-                </div>
-
-                <div class="option-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="memories">
-                        <label for="memories">Include Full Memory Package (+$1,500)</label>
-                    </div>
-                    <p class="price-info">Access to complete memories, skills, and personality nuances</p>
-                </div>
-
-                <div class="option-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="insurance">
-                        <label for="insurance">Possession Insurance (+$499)</label>
-                    </div>
-                    <p class="price-info">Protection against unexpected host resistance or early termination</p>
-                </div>
-
-                <div class="total-cost">
-                    <h3>Total Cost:</h3>
-                    <div class="total-amount" id="totalCost">$299</div>
-                </div>
-
-                <button class="possess-button" onclick="initiateSession()">
-                    👻 INITIATE POSSESSION
-                </button>
-
-                <div class="warning">
-                    ⚠️ Warning: All possessions are subject to our Terms of Service. Host consciousness will be temporarily suspended. Any actions taken during possession are the responsibility of the possessing entity. Memories created during possession will be retained by the host upon session completion.
-                </div>
-            </div>
-        </div>
+  <!-- ── Navigation ──────────────────────────── -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="home.html" class="nav-logo">
+        <span class="nav-logo-icon">👻</span>
+        Possession.com
+      </a>
+      <div class="nav-actions">
+        <a href="home.html" class="nav-btn nav-btn-ghost">← Browse Hosts</a>
+      </div>
     </div>
+  </header>
 
-    <!-- Include Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+  <!-- ── Main ────────────────────────────────── -->
+  <main class="page-wrap" id="pageMain">
+    <!-- Content injected by JS -->
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading host profile…</p>
+    </div>
+  </main>
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
-            authDomain: "reviews-48f44.firebaseapp.com",
-            databaseURL: "https://reviews-48f44-default-rtdb.firebaseio.com",
-            projectId: "reviews-48f44",
-            storageBucket: "reviews-48f44.firebasestorage.app",
-            messagingSenderId: "978976687091",
-            appId: "1:978976687091:web:a9a6cdc13e6570ab598886",
-            measurementId: "G-PY6SPKVLES"
-        };
+  <!-- ── Lightbox ─────────────────────────────── -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+  <!-- ── Possession Confirm Modal ─────────────── -->
+  <div class="modal-backdrop" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-icon">👻</div>
+      <div class="modal-title" id="modalTitle">Confirm Possession</div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+        <button class="btn btn-primary" id="modalConfirm">✓ Confirm</button>
+      </div>
+    </div>
+  </div>
 
-        // Make loadReviews available globally
-        window.loadReviews = function(hostName, jsonReviews = []) {
-            const reviewsRef = ref(database, 'reviews');
-            const hostQuery = query(reviewsRef, orderByChild('hostName'), equalTo(hostName));
-            
-            onValue(hostQuery, (snapshot) => {
-                const reviewsContainer = document.getElementById('reviewsContainer');
-                const firebaseReviews = [];
-                
-                snapshot.forEach((childSnapshot) => {
-                    const review = childSnapshot.val();
-                    // Only show approved reviews
-                    if (review.approved === true) {
-                        firebaseReviews.push(review);
-                    }
-                });
+  <!-- ── Toast ────────────────────────────────── -->
+  <div class="toast-container" id="toastContainer"></div>
 
-                // Combine JSON reviews with Firebase reviews
-                const allReviews = [...jsonReviews, ...firebaseReviews];
+  <!-- ── Firebase (module) ─────────────────────── -->
+  <script type="module">
+    import { initializeApp }                                              from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, get, push, query, orderByChild, equalTo,
+             onValue, serverTimestamp }                                   from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-                if (allReviews.length === 0) {
-                    reviewsContainer.innerHTML = `
-                        <div class="no-reviews">
-                            No reviews yet. Be the first to review this host!
-                        </div>
-                    `;
-                } else {
-                    // Sort by timestamp (newest first), but JSON reviews without timestamps go to the end
-                    allReviews.sort((a, b) => {
-                        const aTime = a.timestamp || 0;
-                        const bTime = b.timestamp || 0;
-                        return bTime - aTime;
-                    });
-                    
-                    reviewsContainer.innerHTML = allReviews.map(review => {
-                        const date = review.timestamp ? new Date(review.timestamp).toLocaleDateString() : '';
-                        return `
-                            <div class="review">
-                                <div class="review-header">
-                                    <span class="review-user">${escapeHtml(review.user)}</span>
-                                    <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)} ${review.rating}/5</span>
-                                </div>
-                                <div class="review-text">
-                                    ${escapeHtml(review.text).replace(/\n/g, '<br>')}
-                                </div>
-                                ${date ? `<div class="review-date">${date}</div>` : ''}
-                            </div>
-                        `;
-                    }).join('');
-                }
-            }, (error) => {
-                console.error('Error loading Firebase reviews:', error);
-                // Even if Firebase fails, show JSON reviews
-                const reviewsContainer = document.getElementById('reviewsContainer');
-                
-                if (jsonReviews.length === 0) {
-                    reviewsContainer.innerHTML = `
-                        <div class="no-reviews">
-                            Unable to load new reviews at this time. ${jsonReviews.length > 0 ? 'Showing existing reviews only.' : ''}
-                        </div>
-                    `;
-                } else {
-                    reviewsContainer.innerHTML = jsonReviews.map(review => {
-                        return `
-                            <div class="review">
-                                <div class="review-header">
-                                    <span class="review-user">${escapeHtml(review.user)}</span>
-                                    <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)} ${review.rating}/5</span>
-                                </div>
-                                <div class="review-text">
-                                    ${escapeHtml(review.text).replace(/\n/g, '<br>')}
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            });
-        };
+    /* ── Firebase config ───────────────────────── */
+    const firebaseConfig = {
+      apiKey:            "AIzaSyC_-3gi8bWDy4WGVBIBzsc2bEEG4qe0Qus",
+      authDomain:        "reviews-48f44.firebaseapp.com",
+      databaseURL:       "https://reviews-48f44-default-rtdb.firebaseio.com",
+      projectId:         "reviews-48f44",
+      storageBucket:     "reviews-48f44.firebasestorage.app",
+      messagingSenderId: "978976687091",
+      appId:             "1:978976687091:web:a9a6cdc13e6570ab598886"
+    };
+    const app      = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-    </script>
+    /* ── URL parsing ───────────────────────────── */
+    const urlParams  = new URLSearchParams(window.location.search);
+    const PROFILE_ID = urlParams.has('id')
+      ? urlParams.get('id')
+      : Array.from(urlParams.keys())[0] || 'maria';
+    const IS_FIREBASE = PROFILE_ID.startsWith('fb_');
 
-    <script>
-        // ============================================
-        // CONFIGURATION - Automatically set from URL or use default
-        // ============================================
-        function getProfileIdFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            // Check if 'id' parameter exists (e.g., ?id=vanessa)
-            if (urlParams.has('id')) {
-                return urlParams.get('id');
-            }
-            
-            // Otherwise, get the first parameter key (e.g., ?vanessa)
-            const firstParam = Array.from(urlParams.keys())[0];
-            if (firstParam) {
-                return firstParam;
-            }
-            
-            // Default fallback
-            return 'maria';
-        }
-        
-        const PROFILE_ID = getProfileIdFromUrl();
-        console.log('Loading profile:', PROFILE_ID);
-        
-        // PROFILE DATA - Load from external source or URL parameter
-        let profileData = null;
-        
-        // Default profile data as fallback
-        function getDefaultProfileData() {
-            return {
-                'default': {
-                    name: "Sample Host",
-                    age: 25,
-                    height: "5'8\"",
-                    build: "Athletic",
-                    occupation: "Software Developer",
-                    relationshipStatus: "Single",
-                    sexualHistory: "2 Previous Relationships",
-                    wealth: "$75,000/year",
-                    personality: "Outgoing, Creative, Adventurous",
-                    libido: "High",
-                    responsiveness: "Very Responsive",
-                    skills: "Programming, Guitar, Rock Climbing",
-                    images: [
-                        "https://via.placeholder.com/300x400/4a0080/e0b3ff?text=Photo+1",
-                        "https://via.placeholder.com/300x400/6a00a0/e0b3ff?text=Photo+2",
-                        "https://via.placeholder.com/300x400/8a2be2/e0b3ff?text=Photo+3"
-                    ],
-                    prices: {
-                        "1": 299,
-                        "4": 999,
-                        "24": 1999,
-                        "168": 9999,
-                        "720": 29999
-                    },
-                    reviews: []
-                }
-            };
-        }
+    /* ── State ─────────────────────────────────── */
+    let profileData = null;
+    const PRICES    = { memories: 1500, insurance: 499 };
 
-        // Function to load profile data from JSON file or URL parameter
-        async function loadProfileData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const profileId = urlParams.get('id') || PROFILE_ID;
-            
-            try {
-                const response = await fetch(`https://raw.githubusercontent.com/augiea/possession.com/refs/heads/main/profile-data.json`);
-                if (!response.ok) throw new Error('Failed to fetch profile data');
-                const allProfiles = await response.json();
-                profileData = allProfiles[profileId] || allProfiles[PROFILE_ID];
-            } catch (error) {
-                console.log('Loading embedded profile data:', error.message);
-                profileData = getDefaultProfileData()[profileId] || getDefaultProfileData()['default'];
-            }
-            
-            renderProfile();
-            
-            // Load reviews from both JSON and Firebase
-            const jsonReviews = profileData.reviews || [];
-            if (typeof window.loadReviews === 'function') {
-                window.loadReviews(profileData.name, jsonReviews);
-            }
-        }
-
-        // Render profile with loaded data
-        function renderProfile() {
-            if (!profileData) return;
-
-            // Update gallery images
-            const galleryGrid = document.querySelector('.gallery-grid');
-            galleryGrid.innerHTML = profileData.images.map((img, i) => `
-                <div class="gallery-item">
-                    <img src="${img}" alt="Host Photo ${i + 1}" onerror="this.parentElement.innerHTML='<div class=\\'gallery-placeholder\\'>Image ${i + 1}<br>Not Available</div>'">
-                </div>
-            `).join('');
-
-            // Helper function to create profile item only if value exists
-            function createProfileItem(label, value) {
-                if (value === undefined || value === null || value === '') return '';
-                return `
-                    <div class="profile-item">
-                        <span class="profile-label">${label}:</span>
-                        <span class="profile-value">${value}</span>
-                    </div>
-                `;
-            }
-
-            // Update profile information
-            document.querySelector('.profile-grid').innerHTML = `
-                ${createProfileItem('Name', profileData.name)}
-                ${createProfileItem('Age', profileData.age ? `${profileData.age} Years` : null)}
-                ${createProfileItem('Height', profileData.height)}
-                ${createProfileItem('Weight', profileData.weight)}
-                ${createProfileItem('Breast Size', profileData.breastSize)}
-                ${createProfileItem('Occupation', profileData.occupation)}
-                ${createProfileItem('Relationship Status', profileData.relationshipStatus)}
-                ${createProfileItem('Sexual History', profileData.sexualHistory)}
-                ${createProfileItem('Wealth', profileData.wealth)}
-                ${createProfileItem('Personality', profileData.personality)}
-                ${createProfileItem('Libido', profileData.libido)}
-                ${createProfileItem('Responsiveness', profileData.responsiveness)}
-                ${createProfileItem('Memory Package Skills', profileData.skills)}
-            `;
-
-            updatePriceOptions();
-        }
-
-        function updatePriceOptions() {
-            const priceData = profileData.prices;
-            document.getElementById('duration').innerHTML = `
-                <option value="1">1 Hour - $${priceData['1'].toLocaleString()}</option>
-                <option value="4">4 Hours - $${priceData['4'].toLocaleString()}</option>
-                <option value="24">24 Hours - $${priceData['24'].toLocaleString()}</option>
-                <option value="168">1 Week - $${priceData['168'].toLocaleString()}</option>
-                <option value="720">1 Month - $${priceData['720'].toLocaleString()}</option>
-            `;
-            
-            prices.duration = priceData;
-            
-            updateTotal();
-        }
-
-        const prices = {
-            duration: {},
-            memories: 1500,
-            insurance: 499
-        };
-
-        function updateTotal() {
-            const duration = document.getElementById('duration').value;
-            const memories = document.getElementById('memories').checked;
-            const insurance = document.getElementById('insurance').checked;
-
-            let total = prices.duration[duration];
-            if (memories) total += prices.memories;
-            if (insurance) total += prices.insurance;
-
-            document.getElementById('totalCost').textContent = '$' + total.toLocaleString();
-        }
-
-        document.getElementById('duration').addEventListener('change', updateTotal);
-        document.getElementById('memories').addEventListener('change', updateTotal);
-        document.getElementById('insurance').addEventListener('change', updateTotal);
-
-        function initiateSession() {
-            const duration = document.getElementById('duration').value;
-            const time = document.getElementById('time').value;
-            const memories = document.getElementById('memories').checked;
-            const insurance = document.getElementById('insurance').checked;
-
-            const timeText = document.getElementById('time').options[document.getElementById('time').selectedIndex].text;
-
-            alert('🌀 Initiating possession sequence...\n\n' +
-                  'Host: ' + profileData.name + '\n' +
-                  'Duration: ' + document.getElementById('duration').options[document.getElementById('duration').selectedIndex].text + '\n' +
-                  'Start Time: ' + timeText + '\n' +
-                  'Memory Package: ' + (memories ? 'YES' : 'NO') + '\n' +
-                  'Insurance: ' + (insurance ? 'YES' : 'NO') + '\n\n' +
-                  'Connecting to host consciousness...\n' +
-                  'Please prepare for transfer.');
-        }
-
-        // Load profile data when page loads
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadProfileData);
+    /* ── Load profile ──────────────────────────── */
+    async function loadProfile() {
+      try {
+        if (IS_FIREBASE) {
+          await loadFirebaseProfile();
         } else {
-            loadProfileData();
+          await loadJsonProfile();
         }
-    </script>
+        renderPage();
+        loadReviews();
+      } catch (err) {
+        console.error(err);
+        showError('Failed to load host profile. Returning to browse…');
+        setTimeout(() => window.location.href = 'home.html', 2500);
+      }
+    }
+
+    async function loadFirebaseProfile() {
+      const fbId      = PROFILE_ID.replace('fb_', '');
+      const hostRef   = ref(database, `hostRequests/${fbId}`);
+      const snapshot  = await get(hostRef);
+
+      if (!snapshot.exists()) throw new Error('Host not found');
+      const host = snapshot.val();
+      if (!host.approved) {
+        showError('This host is pending approval.');
+        setTimeout(() => window.location.href = 'home.html', 2000);
+        throw new Error('Not approved');
+      }
+
+      profileData = {
+        name:               host.name,
+        age:                host.age,
+        height:             host.height,
+        weight:             host.weight,
+        breastSize:         host.breastSize,
+        occupation:         host.occupation,
+        relationshipStatus: host.relationshipStatus,
+        sexualHistory:      host.sexualHistory,
+        wealth:             host.wealth,
+        personality:        host.personality,
+        libido:             host.libido,
+        responsiveness:     host.responsiveness,
+        skills:             host.skills,
+        images:             host.images || [],
+        prices:             host.prices || { '1':299,'4':999,'24':1999,'168':9999,'720':29999 },
+        reviews:            (host.reviews || []).map(r => ({ user:r.user, rating:r.rating, text:r.text }))
+      };
+    }
+
+    async function loadJsonProfile() {
+      // Fetch from profile-data.json served relative to the page
+      // (Do NOT fetch from raw.githubusercontent.com — use the deployed file)
+      const resp = await fetch('profile-data.json');
+      if (!resp.ok) throw new Error('JSON fetch failed');
+      const all  = await resp.json();
+
+      // profile-data.json may be structured as { profiles: { id: {...} } } or { id: {...} }
+      const root = all.profiles || all;
+      profileData = root[PROFILE_ID];
+      if (!profileData) throw new Error(`No profile for key: ${PROFILE_ID}`);
+    }
+
+    /* ── Render full page ──────────────────────── */
+    function renderPage() {
+      document.title = `${profileData.name} — Possession.com`;
+      document.getElementById('pageMain').innerHTML = buildPageHTML();
+
+      // Wire up pricing controls
+      document.getElementById('duration')  .addEventListener('change', updateTotal);
+      document.getElementById('memories')  .addEventListener('change', updateTotal);
+      document.getElementById('insurance') .addEventListener('change', updateTotal);
+      updateTotal();
+
+      // Wire up possess button
+      document.getElementById('possessBtn').addEventListener('click', openConfirmModal);
+
+      // Wire up gallery lightbox
+      document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.addEventListener('click', () => openLightbox(img.src));
+      });
+    }
+
+    function buildPageHTML() {
+      const p      = profileData;
+      const images = (p.images || []).map((src, i) => `
+        <div class="gallery-item">
+          <img src="${esc(src)}" alt="${esc(p.name)} photo ${i+1}"
+               loading="${i===0?'eager':'lazy'}"
+               onerror="this.parentElement.innerHTML='<div class=\\'gallery-placeholder\\'>Image unavailable</div>'">
+        </div>`).join('');
+
+      const stats = buildStats(p);
+
+      const priceOpts = Object.entries(p.prices || {})
+        .sort((a,b) => Number(a[0]) - Number(b[0]))
+        .map(([hours, price]) => {
+          const label = hours==='1'?'1 Hour' : hours==='4'?'4 Hours' : hours==='24'?'24 Hours' : hours==='168'?'1 Week' : '1 Month';
+          return `<option value="${hours}" data-price="${price}">${label} — $${Number(price).toLocaleString()}</option>`;
+        }).join('');
+
+      return `
+        <a href="home.html" class="back-link">← Back to Browse</a>
+
+        <!-- Gallery -->
+        <div class="card">
+          <div class="card-title">📸 Host Gallery</div>
+          <div class="gallery-grid">${images || '<p class="text-muted">No images available</p>'}</div>
+        </div>
+
+        <!-- Profile -->
+        <div class="card">
+          <div class="card-title">📋 Host Profile — ${esc(p.name)}</div>
+          <div class="profile-grid" id="profileGrid">${stats}</div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="card">
+          <div class="reviews-header">
+            <div class="card-title" style="margin:0;border:0;padding:0;">⭐ Reviews</div>
+            <a href="submit-review.html?host=${encodeURIComponent(p.name)}" class="btn btn-ghost" style="font-size:0.85em;">✍️ Write a Review</a>
+          </div>
+          <div id="reviewsContainer">
+            <div class="loading-state"><div class="loading-spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="pricing-panel">
+          <div class="card-title">🎯 Possession Options</div>
+
+          <div class="option-row">
+            <label for="duration">Duration</label>
+            <select id="duration">${priceOpts}</select>
+          </div>
+
+          <div class="option-row">
+            <label for="time">Preferred Start Time</label>
+            <select id="time">
+              <option value="immediate">Immediate — possess right now</option>
+              <option value="morning">Morning (6 AM – 12 PM)</option>
+              <option value="afternoon">Afternoon (12 PM – 6 PM)</option>
+              <option value="evening">Evening (6 PM – 12 AM)</option>
+              <option value="night">Night (12 AM – 6 AM)</option>
+            </select>
+          </div>
+
+          <div class="add-on-row">
+            <div class="add-on-item">
+              <div class="checkbox-row">
+                <input type="checkbox" id="memories">
+                <label for="memories">Full Memory Package <span class="text-muted">(+$${PRICES.memories.toLocaleString()})</span></label>
+              </div>
+              <p class="add-on-desc">Access complete memories, skills, and personality nuances</p>
+            </div>
+            <div class="add-on-item">
+              <div class="checkbox-row">
+                <input type="checkbox" id="insurance">
+                <label for="insurance">Possession Insurance <span class="text-muted">(+$${PRICES.insurance.toLocaleString()})</span></label>
+              </div>
+              <p class="add-on-desc">Protection against unexpected host resistance or early termination</p>
+            </div>
+          </div>
+
+          <div class="total-box">
+            <div class="total-label">Total Cost</div>
+            <div class="total-amount" id="totalCost">—</div>
+          </div>
+
+          <button class="btn btn-possess" id="possessBtn">
+            👻 INITIATE POSSESSION
+          </button>
+
+          <div class="warning-banner mt-16">
+            ⚠️ All possessions are subject to our Terms of Service. Host consciousness will be temporarily suspended.
+            Any actions taken during possession are the full responsibility of the possessing entity.
+            Memories created during possession will be retained by the host upon session completion.
+          </div>
+        </div>`;
+    }
+
+    function buildStats(p) {
+      const rows = [
+        ['Name',               p.name],
+        ['Age',                p.age ? `${p.age} years` : null],
+        ['Height',             p.height],
+        ['Weight',             p.weight],
+        ['Breast Size',        p.breastSize],
+        ['Occupation',         p.occupation],
+        ['Relationship',       p.relationshipStatus],
+        ['Sexual History',     p.sexualHistory],
+        ['Wealth',             p.wealth],
+        ['Personality',        p.personality],
+        ['Libido',             p.libido],
+        ['Responsiveness',     p.responsiveness],
+        ['Memory Package Skills', p.skills],
+      ];
+      return rows
+        .filter(([,v]) => v != null && v !== '')
+        .map(([label, value]) => `
+          <div class="profile-item">
+            <span class="profile-label">${esc(label)}</span>
+            <span class="profile-value">${esc(String(value))}</span>
+          </div>`).join('');
+    }
+
+    /* ── Pricing ───────────────────────────────── */
+    function updateTotal() {
+      const sel       = document.getElementById('duration');
+      const basePrice = Number(sel.selectedOptions[0]?.dataset.price || 0);
+      const memories  = document.getElementById('memories').checked  ? PRICES.memories  : 0;
+      const insurance = document.getElementById('insurance').checked ? PRICES.insurance : 0;
+      const total     = basePrice + memories + insurance;
+      document.getElementById('totalCost').textContent = '$' + total.toLocaleString();
+      return { basePrice, total };
+    }
+
+    /* ── Confirm modal ─────────────────────────── */
+    function openConfirmModal() {
+      const durSel   = document.getElementById('duration');
+      const timeSel  = document.getElementById('time');
+      const memories = document.getElementById('memories').checked;
+      const insurance= document.getElementById('insurance').checked;
+      const { total }= updateTotal();
+
+      const durText  = durSel.selectedOptions[0].text;
+      const timeText = timeSel.selectedOptions[0].text;
+
+      document.getElementById('modalBody').innerHTML = `
+        <div class="modal-row"><span class="modal-row-label">Host</span><span class="modal-row-value">${esc(profileData.name)}</span></div>
+        <div class="modal-row"><span class="modal-row-label">Duration</span><span class="modal-row-value">${esc(durText)}</span></div>
+        <div class="modal-row"><span class="modal-row-label">Start Time</span><span class="modal-row-value">${esc(timeText)}</span></div>
+        <div class="modal-row"><span class="modal-row-label">Memory Package</span><span class="modal-row-value">${memories?'Yes':'No'}</span></div>
+        <div class="modal-row"><span class="modal-row-label">Insurance</span><span class="modal-row-value">${insurance?'Yes':'No'}</span></div>
+        <div class="modal-row modal-total"><span class="modal-row-label">Total</span><span class="modal-row-value">$${total.toLocaleString()}</span></div>`;
+
+      document.getElementById('confirmModal').classList.add('open');
+      document.getElementById('modalConfirm').onclick = () => submitSession({ durText, timeText, memories, insurance, total });
+    }
+
+    document.getElementById('modalCancel').addEventListener('click', () =>
+      document.getElementById('confirmModal').classList.remove('open'));
+
+    document.getElementById('confirmModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('confirmModal'))
+        document.getElementById('confirmModal').classList.remove('open');
+    });
+
+    /* ── Submit session to Firebase ────────────── */
+    async function submitSession({ durText, timeText, memories, insurance, total }) {
+      const confirmBtn = document.getElementById('modalConfirm');
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'Submitting…';
+
+      const sessionData = {
+        hostName:       profileData.name,
+        hostProfileId:  PROFILE_ID,
+        duration:       document.getElementById('duration').value,
+        durationText:   durText,
+        startTime:      document.getElementById('time').value,
+        startTimeText:  timeText,
+        memories,
+        insurance,
+        totalCost:      total,
+        status:         'pending',
+        timestamp:      serverTimestamp()
+      };
+
+      try {
+        const sessionsRef = ref(database, 'sessions');
+        const result      = await push(sessionsRef, sessionData);
+        document.getElementById('confirmModal').classList.remove('open');
+        showToast('🌀 Possession request submitted! Connecting to host consciousness…', 'success');
+        confirmBtn.textContent = '✓ Submitted';
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to submit request. Please try again.', 'error');
+        confirmBtn.disabled   = false;
+        confirmBtn.textContent = '✓ Confirm';
+      }
+    }
+
+    /* ── Reviews ───────────────────────────────── */
+    function loadReviews() {
+      const container   = document.getElementById('reviewsContainer');
+      const reviewsRef  = ref(database, 'reviews');
+      const hostQuery   = query(reviewsRef, orderByChild('hostName'), equalTo(profileData.name));
+      const jsonReviews = (profileData.reviews || []).map(r => ({
+        user: r.user, rating: r.rating, text: r.text, timestamp: null
+      }));
+
+      onValue(hostQuery, snapshot => {
+        const fbReviews = [];
+        snapshot.forEach(child => {
+          const r = child.val();
+          if (r.approved === true) {
+            fbReviews.push({ user: r.reviewerName, rating: r.rating, text: r.reviewText, timestamp: r.timestamp });
+          }
+        });
+
+        const all = [...jsonReviews, ...fbReviews]
+          .sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+
+        if (all.length === 0) {
+          container.innerHTML = `<div class="reviews-empty">No reviews yet — be the first to review this host!</div>`;
+          return;
+        }
+
+        container.innerHTML = all.map(r => {
+          const date = r.timestamp ? new Date(r.timestamp).toLocaleDateString() : '';
+          return `
+            <div class="review-card">
+              <div class="review-header">
+                <span class="review-user">${esc(r.user)}</span>
+                <span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)} ${r.rating}/5</span>
+              </div>
+              <div class="review-text">${esc(r.text).replace(/\n/g,'<br>')}</div>
+              ${date ? `<div class="review-date">${date}</div>` : ''}
+            </div>`;
+        }).join('');
+
+      }, () => {
+        // Firebase unavailable — fall back to JSON reviews
+        if (jsonReviews.length === 0) {
+          container.innerHTML = `<div class="reviews-empty">Reviews temporarily unavailable.</div>`;
+        } else {
+          container.innerHTML = jsonReviews.map(r => `
+            <div class="review-card">
+              <div class="review-header">
+                <span class="review-user">${esc(r.user)}</span>
+                <span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)} ${r.rating}/5</span>
+              </div>
+              <div class="review-text">${esc(r.text).replace(/\n/g,'<br>')}</div>
+            </div>`).join('');
+        }
+      });
+    }
+
+    /* ── Lightbox ──────────────────────────────── */
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    document.getElementById('lightboxClose').addEventListener('click', () =>
+      document.getElementById('lightbox').classList.remove('open'));
+    document.getElementById('lightbox').addEventListener('click', e => {
+      if (e.target === document.getElementById('lightbox'))
+        document.getElementById('lightbox').classList.remove('open');
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.getElementById('lightbox').classList.remove('open');
+        document.getElementById('confirmModal').classList.remove('open');
+      }
+    });
+
+    /* ── Error helper ──────────────────────────── */
+    function showError(msg) {
+      document.getElementById('pageMain').innerHTML = `
+        <div class="empty-state">
+          <h3>⚠️ ${esc(msg)}</h3>
+          <a href="home.html" class="btn btn-ghost mt-16">← Browse Hosts</a>
+        </div>`;
+    }
+
+    /* ── Toast helper ──────────────────────────── */
+    function showToast(msg, type = 'info') {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = `toast toast-${type}`;
+      t.textContent = msg;
+      c.appendChild(t);
+      requestAnimationFrame(() => t.classList.add('show'));
+      setTimeout(() => {
+        t.classList.remove('show');
+        setTimeout(() => t.remove(), 400);
+      }, 4000);
+    }
+
+    /* ── XSS escape ────────────────────────────── */
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    /* ── Boot ──────────────────────────────────── */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadProfile);
+    } else {
+      loadProfile();
+    }
+  </script>
 </body>
 </html>
