@@ -4,7 +4,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>👻 Possession.com</title>
+    <title>Possession.com - Host Profile</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Georgia', serif;
             background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
             color: #e0e0e0;
             min-height: 100vh;
@@ -21,346 +21,415 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            overflow: hidden;
         }
 
         header {
-            background: rgba(20, 20, 40, 0.95);
-            padding: 20px 30px;
-            border-radius: 15px 15px 0 0;
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            border-bottom: none;
+            background: linear-gradient(90deg, #4a0080 0%, #6a00a0 100%);
+            padding: 30px;
+            border-bottom: 2px solid #8a2be2;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            position: relative;
         }
 
-        .back-btn {
-            font-size: 24px;
-            text-decoration: none;
+        .back-button {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
             color: #e0b3ff;
-            transition: transform 0.2s;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
         }
 
-        .back-btn:hover {
-            transform: scale(1.2);
+        .back-button:hover {
+            color: #fff;
+            transform: translateX(-5px);
         }
 
         h1 {
-            font-size: 2em;
             color: #e0b3ff;
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        h1:hover {
+            color: #fff;
+        }
+
+        .tagline {
+            color: #c0c0c0;
+            font-style: italic;
+            margin-top: 10px;
         }
 
         .content {
-            background: rgba(20, 20, 40, 0.95);
-            padding: 30px;
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            border-radius: 0 0 15px 15px;
-        }
-
-        section {
-            margin-bottom: 40px;
-        }
-
-        h2 {
-            color: #b08fd1;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(138, 43, 226, 0.4);
+            padding: 40px;
         }
 
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            margin-bottom: 40px;
         }
 
-        .gallery img {
-            width: 100%;
+        .gallery h2 {
+            color: #e0b3ff;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8a2be2;
+            padding-bottom: 10px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
             aspect-ratio: 3/4;
-            object-fit: cover;
+            background: linear-gradient(135deg, #2a2a4a 0%, #3a3a5a 100%);
             border-radius: 10px;
-            border: 2px solid rgba(138, 43, 226, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #6a00a0;
             transition: all 0.3s;
             cursor: pointer;
+            overflow: hidden;
+            position: relative;
         }
 
-        .gallery img:hover {
-            border-color: #8a2be2;
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover {
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
         }
 
-        .profile-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        .gallery-placeholder {
+            color: #8a8a8a;
+            text-align: center;
         }
 
-        .info-item {
-            background: rgba(40, 40, 60, 0.6);
-            padding: 15px;
+        .profile-section {
+            margin-bottom: 40px;
+            background: rgba(40, 40, 60, 0.5);
+            padding: 30px;
             border-radius: 10px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            border: 1px solid #6a00a0;
         }
 
-        .info-label {
-            color: #9a9a9a;
-            font-size: 0.9em;
+        .profile-section h2 {
+            color: #e0b3ff;
+            margin-bottom: 20px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-item {
+            padding: 15px;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 8px;
+            border-left: 3px solid #8a2be2;
+        }
+
+        .profile-label {
+            color: #b08fd1;
+            font-weight: bold;
+            display: block;
             margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .info-value {
+        .profile-value {
             color: #e0e0e0;
-            font-size: 1.3em;
-            font-weight: 600;
         }
 
-        .review-card {
-            background: rgba(40, 40, 60, 0.6);
+        .reviews-section {
+            margin-bottom: 40px;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-review-btn {
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .add-review-btn:hover {
+            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+        }
+
+        .review {
+            background: rgba(40, 40, 60, 0.5);
             padding: 20px;
+            margin-bottom: 20px;
             border-radius: 10px;
             border-left: 4px solid #8a2be2;
-            margin-bottom: 15px;
         }
 
         .review-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 10px;
         }
 
-        .review-author {
-            color: #e0b3ff;
-            font-weight: 600;
-            font-size: 1.1em;
+        .review-user {
+            color: #b08fd1;
+            font-weight: bold;
         }
 
         .review-rating {
             color: #ffd700;
-            font-size: 1.2em;
         }
 
         .review-text {
             color: #d0d0d0;
             line-height: 1.6;
-            margin-bottom: 10px;
         }
 
         .review-date {
-            color: #9a9a9a;
+            color: #888;
             font-size: 0.85em;
+            margin-top: 10px;
         }
 
-        .write-review-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 15px;
-            transition: all 0.3s;
+        .no-reviews {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-style: italic;
         }
 
-        .write-review-btn:hover {
-            background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
-            transform: translateY(-2px);
+        .loading-reviews {
+            text-align: center;
+            padding: 20px;
+            color: #b08fd1;
         }
 
-        .booking-form {
-            background: rgba(40, 40, 60, 0.8);
+        .options-section {
+            background: rgba(40, 40, 60, 0.7);
             padding: 30px;
-            border-radius: 15px;
-            border: 2px solid rgba(138, 43, 226, 0.4);
+            border-radius: 10px;
+            border: 2px solid #8a2be2;
         }
 
-        .form-group {
+        .option-group {
             margin-bottom: 25px;
         }
 
-        label {
+        .option-group label {
             display: block;
             color: #b08fd1;
-            font-weight: 600;
             margin-bottom: 10px;
-            font-size: 1.1em;
+            font-weight: bold;
         }
 
-        select, input[type="radio"] {
-            margin-right: 8px;
-        }
-
-        select {
+        select, input[type="number"] {
             width: 100%;
             padding: 12px;
-            background: rgba(20, 20, 40, 0.9);
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            border-radius: 8px;
+            background: rgba(30, 30, 50, 0.9);
+            border: 1px solid #6a00a0;
+            border-radius: 5px;
             color: #e0e0e0;
-            font-size: 1em;
-            cursor: pointer;
+            font-size: 16px;
         }
 
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .radio-option {
+        .checkbox-group {
             display: flex;
             align-items: center;
-            padding: 12px;
-            background: rgba(30, 30, 50, 0.6);
-            border-radius: 8px;
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .radio-option:hover {
-            background: rgba(40, 40, 60, 0.8);
-            border-color: rgba(138, 43, 226, 0.5);
-        }
-
-        .radio-option input[type="radio"] {
-            cursor: pointer;
-        }
-
-        .radio-option label {
-            margin: 0;
-            cursor: pointer;
-            flex: 1;
-            font-size: 1em;
-        }
-
-        .addon-option {
-            display: flex;
-            align-items: flex-start;
             gap: 10px;
-            padding: 15px;
-            background: rgba(30, 30, 50, 0.6);
-            border-radius: 8px;
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .addon-option:hover {
-            background: rgba(40, 40, 60, 0.8);
-            border-color: rgba(138, 43, 226, 0.5);
-        }
-
-        .addon-content {
-            flex: 1;
-        }
-
-        .addon-title {
-            color: #e0b3ff;
-            font-weight: 600;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
-
-        .addon-description {
-            color: #b0b0b0;
+        .price-info {
+            color: #90ee90;
             font-size: 0.9em;
+            margin-top: 5px;
         }
 
         .total-cost {
-            background: linear-gradient(135deg, #4a0080 0%, #6a00a0 100%);
+            background: rgba(60, 60, 80, 0.7);
             padding: 20px;
-            border-radius: 10px;
-            margin: 25px 0;
+            border-radius: 8px;
+            margin: 20px 0;
             text-align: center;
         }
 
-        .total-label {
-            color: #b08fd1;
-            font-size: 1.2em;
-            margin-bottom: 5px;
+        .total-cost h3 {
+            color: #e0b3ff;
+            margin-bottom: 10px;
         }
 
         .total-amount {
+            font-size: 2em;
             color: #90ee90;
-            font-size: 2.5em;
-            font-weight: 700;
+            font-weight: bold;
         }
 
-        .possess-btn {
+        .possess-button {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background: linear-gradient(90deg, #6a00a0 0%, #8a2be2 100%);
             border: none;
             border-radius: 10px;
             color: white;
-            font-size: 1.3em;
-            font-weight: 700;
+            font-size: 1.5em;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        .possess-btn:hover {
+        .possess-button:hover {
             background: linear-gradient(90deg, #8a2be2 0%, #9a4be2 100%);
             box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+        }
+
+        .possess-button:active {
+            transform: translateY(0);
         }
 
         .warning {
-            background: rgba(255, 100, 100, 0.1);
-            border: 1px solid rgba(255, 100, 100, 0.3);
+            background: rgba(139, 0, 0, 0.3);
+            border: 1px solid #8b0000;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 5px;
             margin-top: 20px;
             color: #ffb3b3;
             font-size: 0.9em;
-            line-height: 1.6;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px;
-            font-size: 1.5em;
-            color: #b08fd1;
-        }
-
-        .error {
-            text-align: center;
-            padding: 60px;
-            color: #ff6b6b;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <a href="home.html" class="back-btn" title="Back to Home">←</a>
-            <h1 id="pageTitle">👻 Possession.com</h1>
+            <a href="https://augiea.github.io/possession.com/home.html" class="back-button" title="Back to Home">←</a>
+            <h1 onclick="window.location.href='https://augiea.github.io/possession.com/home.html'">👻 Possession.com</h1>
         </header>
 
-        <div class="content" id="mainContent">
-            <div class="loading">Loading profile...</div>
+        <div class="content">
+            <!-- Gallery Section -->
+            <div class="gallery">
+                <h2>📸 Host Gallery</h2>
+                <div class="gallery-grid">
+                    <!-- Images will be loaded from JSON -->
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <h2>📋 Host Profile</h2>
+                <div class="profile-grid">
+                    <!-- Profile data will be loaded from JSON -->
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="reviews-section profile-section">
+                <div class="reviews-header">
+                    <h2>⭐ User Reviews</h2>
+                    <a href="submit-review.html" class="add-review-btn">✍️ Write a Review</a>
+                </div>
+                <div id="reviewsContainer">
+                    <div class="loading-reviews">Loading reviews...</div>
+                </div>
+            </div>
+
+            <!-- Possession Options -->
+            <div class="options-section">
+                <h2>🎯 Possession Options</h2>
+                
+                <div class="option-group">
+                    <label for="duration">Duration:</label>
+                    <select id="duration">
+                        <!-- Prices will be loaded from JSON -->
+                    </select>
+                </div>
+
+                <div class="option-group">
+                    <label for="time">Preferred Start Time:</label>
+                    <select id="time">
+                        <option value="immediate">Immediate: Possess right now</option>
+                        <option value="morning">Morning (6AM-12PM)</option>
+                        <option value="afternoon">Afternoon (12PM-6PM)</option>
+                        <option value="evening">Evening (6PM-12AM)</option>
+                        <option value="night">Night (12AM-6AM)</option>
+                    </select>
+                </div>
+
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="memories">
+                        <label for="memories">Include Full Memory Package (+$1,500)</label>
+                    </div>
+                    <p class="price-info">Access to complete memories, skills, and personality nuances</p>
+                </div>
+
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="insurance">
+                        <label for="insurance">Possession Insurance (+$499)</label>
+                    </div>
+                    <p class="price-info">Protection against unexpected host resistance or early termination</p>
+                </div>
+
+                <div class="total-cost">
+                    <h3>Total Cost:</h3>
+                    <div class="total-amount" id="totalCost">$299</div>
+                </div>
+
+                <button class="possess-button" onclick="initiateSession()">
+                    👻 INITIATE POSSESSION
+                </button>
+
+                <div class="warning">
+                    ⚠️ Warning: All possessions are subject to our Terms of Service. Host consciousness will be temporarily suspended. Any actions taken during possession are the responsibility of the possessing entity. Memories created during possession will be retained by the host upon session completion.
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Include Firebase SDK -->
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, get, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -370,405 +439,289 @@
             projectId: "reviews-48f44",
             storageBucket: "reviews-48f44.firebasestorage.app",
             messagingSenderId: "978976687091",
-            appId: "1:978976687091:web:a9a6cdc13e6570ab598886"
+            appId: "1:978976687091:web:a9a6cdc13e6570ab598886",
+            measurementId: "G-PY6SPKVLES"
         };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Get host ID from URL
-        const hostId = window.location.search.substring(1);
-        const isFirebaseHost = hostId.startsWith('fb_');
-
-        // Pricing data
-        let pricingData = {};
-
-        async function loadProfile() {
-            try {
-                if (isFirebaseHost) {
-                    const firebaseId = hostId.replace('fb_', '');
-                    const hostRef = ref(database, `hostRequests/${firebaseId}`);
-                    const snapshot = await get(hostRef);
-                    
-                    if (snapshot.exists()) {
-                        const hostData = snapshot.val();
-                        
-                        if (!hostData.approved) {
-                            showError('This host is pending approval.');
-                            return;
-                        }
-                        
-                        renderProfile(hostData);
-                    } else {
-                        showError('Host not found.');
-                    }
-                } else {
-                    const response = await fetch('profile-data.json');
-                    const data = await response.json();
-                    const host = data.profiles[hostId];
-                    
-                    if (host) {
-                        renderProfile(host, true);
-                    } else {
-                        showError('Host not found.');
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error);
-                showError('Error loading profile. Please try again.');
-            }
-        }
-
-        function renderProfile(host, isLegacy = false) {
-            document.title = `👻 Possession.com - ${host.name}`;
-            
-            // Build profile info items dynamically - only show fields that exist
-            let profileItems = '';
-            
-            // Always show age
-            if (host.age) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Age</div>
-                        <div class="info-value">${host.age} years</div>
-                    </div>
-                `;
-            }
-            
-            // Physical attributes
-            if (host.height) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Height</div>
-                        <div class="info-value">${host.height}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.weight) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Weight</div>
-                        <div class="info-value">${host.weight}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.breastSize) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Breast Size</div>
-                        <div class="info-value">${host.breastSize}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.hair) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Hair</div>
-                        <div class="info-value">${host.hair}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.breasts) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Breasts</div>
-                        <div class="info-value">${host.breasts}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.ethnicity) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Ethnicity</div>
-                        <div class="info-value">${host.ethnicity}</div>
-                    </div>
-                `;
-            }
-            
-            // Lifestyle fields
-            if (host.occupation) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Occupation</div>
-                        <div class="info-value">${host.occupation}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.relationshipStatus) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Relationship Status</div>
-                        <div class="info-value">${host.relationshipStatus}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.wealth) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Wealth</div>
-                        <div class="info-value">${host.wealth}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.sexualHistory) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Sexual History</div>
-                        <div class="info-value">${host.sexualHistory}</div>
-                    </div>
-                `;
-            }
-            
-            // Personality traits
-            if (host.libido) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Libido</div>
-                        <div class="info-value">${host.libido}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.responsiveness) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Responsiveness</div>
-                        <div class="info-value">${host.responsiveness}</div>
-                    </div>
-                `;
-            }
-            
-            if (host.skills) {
-                profileItems += `
-                    <div class="info-item">
-                        <div class="info-label">Memory Package Skills</div>
-                        <div class="info-value">${host.skills}</div>
-                    </div>
-                `;
-            }
-
-            // Always show rating
-            const rating = isLegacy ? (host.rating || 5.0) : (host.reviews[0]?.rating || 5.0);
-            profileItems += `
-                <div class="info-item">
-                    <div class="info-label">Rating</div>
-                    <div class="info-value">⭐ ${rating}</div>
-                </div>
-            `;
-            
-            // Add personality description if it exists (separate from grid)
-            let personalitySection = '';
-            if (host.personality) {
-                personalitySection = `
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(30, 30, 50, 0.6); border-radius: 8px; border: 1px solid rgba(138, 43, 226, 0.3);">
-                        <div class="info-label" style="margin-bottom: 10px;">Personality</div>
-                        <div style="color: #d0d0d0; line-height: 1.6;">${host.personality}</div>
-                    </div>
-                `;
-            }
-
-            // Set pricing data for calculator
-            if (isLegacy) {
-                // Legacy format: { "1 Hour": 299, "3 Hours": 799, ... }
-                pricingData = host.pricing || {};
-            } else {
-                // Firebase format: { "1": 299, "4": 899, "24": 2499, "168": 14999, "720": 29999 }
-                pricingData = {
-                    "1 Hour": host.prices['1'] || 0,
-                    "4 Hours": host.prices['4'] || 0,
-                    "24 Hours": host.prices['24'] || 0,
-                    "1 Week": host.prices['168'] || 0,
-                    "1 Month": host.prices['720'] || 0
-                };
-            }
-
-            // Build reviews
-            let reviewsHTML = '';
-            const reviews = isLegacy ? (host.reviews || []) : (host.reviews || []);
-            
-            reviews.forEach(review => {
-                // Firebase format uses 'user', legacy uses 'author'
-                const author = review.user || review.author || 'Anonymous';
-                const text = review.text || review.reviewText || '';
-                const reviewRating = review.rating || 5;
-                const timestamp = review.timestamp || review.date || Date.now();
-                
-                reviewsHTML += `
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-author">${author}</div>
-                            <div class="review-rating">${'⭐'.repeat(Math.round(reviewRating))}</div>
-                        </div>
-                        <div class="review-text">${text}</div>
-                        <div class="review-date">${new Date(timestamp).toLocaleDateString()}</div>
-                    </div>
-                `;
-            });
-
-            const content = `
-                <section>
-                    <h2>📸 Host Gallery</h2>
-                    <div class="gallery">
-                        ${host.images.map(img => `<img src="${img}" alt="${host.name}">`).join('')}
-                    </div>
-                </section>
-
-                <section>
-                    <h2>📋 Host Profile</h2>
-                    <div class="profile-info">
-                        ${profileItems}
-                    </div>
-                    ${personalitySection}
-                </section>
-
-                <section>
-                    <h2>⭐ User Reviews</h2>
-                    <div id="reviewsContainer">${reviewsHTML}</div>
-                    <a href="submit-review.html" class="write-review-btn">✍️ Write a Review</a>
-                </section>
-
-                <section>
-                    <h2>🎯 Possession Options</h2>
-                    <div class="booking-form">
-                        <div class="form-group">
-                            <label>Duration:</label>
-                            <select id="duration" onchange="updateTotal()">
-                                ${Object.keys(pricingData).map(duration => 
-                                    `<option value="${duration}">${duration} - $${pricingData[duration]}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Preferred Start Time:</label>
-                            <div class="radio-group">
-                                <div class="radio-option">
-                                    <input type="radio" id="immediate" name="startTime" value="immediate" checked>
-                                    <label for="immediate">Immediate: Possess right now</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="morning" name="startTime" value="morning">
-                                    <label for="morning">Morning (6AM-12PM)</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="afternoon" name="startTime" value="afternoon">
-                                    <label for="afternoon">Afternoon (12PM-6PM)</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="evening" name="startTime" value="evening">
-                                    <label for="evening">Evening (6PM-12AM)</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="night" name="startTime" value="night">
-                                    <label for="night">Night (12AM-6AM)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="addon-option">
-                                <input type="checkbox" id="memoryPackage" onchange="updateTotal()">
-                                <div class="addon-content">
-                                    <div class="addon-title">Include Full Memory Package (+$1,500)</div>
-                                    <div class="addon-description">Access to complete memories, skills, and personality nuances</div>
-                                </div>
-                            </div>
-
-                            <div class="addon-option">
-                                <input type="checkbox" id="insurance" onchange="updateTotal()">
-                                <div class="addon-content">
-                                    <div class="addon-title">Possession Insurance (+$499)</div>
-                                    <div class="addon-description">Protection against unexpected host resistance or early termination</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="total-cost">
-                            <div class="total-label">Total Cost:</div>
-                            <div class="total-amount" id="totalCost">$${Object.values(pricingData)[0]}</div>
-                        </div>
-
-                        <button class="possess-btn">👻 INITIATE POSSESSION</button>
-
-                        <div class="warning">
-                            ⚠️ <strong>Warning:</strong> All possessions are subject to our Terms of Service. Host consciousness will be temporarily suspended. Any actions taken during possession are the responsibility of the possessing entity. Memories created during possession will be retained by the host upon session completion.
-                        </div>
-                    </div>
-                </section>
-            `;
-
-            document.getElementById('mainContent').innerHTML = content;
-
-            // Load additional Firebase reviews
-            if (isLegacy || !isLegacy) {
-                loadFirebaseReviews(host.name);
-            }
-        }
-
-        function loadFirebaseReviews(hostName) {
+        // Make loadReviews available globally
+        window.loadReviews = function(hostName, jsonReviews = []) {
             const reviewsRef = ref(database, 'reviews');
-            const approvedQuery = query(reviewsRef, orderByChild('approved'), equalTo(true));
-
-            onValue(approvedQuery, (snapshot) => {
+            const hostQuery = query(reviewsRef, orderByChild('hostName'), equalTo(hostName));
+            
+            onValue(hostQuery, (snapshot) => {
+                const reviewsContainer = document.getElementById('reviewsContainer');
                 const firebaseReviews = [];
+                
                 snapshot.forEach((childSnapshot) => {
                     const review = childSnapshot.val();
-                    if (review.hostName === hostName) {
+                    // Only show approved reviews
+                    if (review.approved === true) {
                         firebaseReviews.push(review);
                     }
                 });
 
-                if (firebaseReviews.length > 0) {
-                    const container = document.getElementById('reviewsContainer');
-                    const firebaseReviewsHTML = firebaseReviews.map(review => `
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="review-author">${review.reviewerName}</div>
-                                <div class="review-rating">${'⭐'.repeat(Math.round(review.rating))}</div>
-                            </div>
-                            <div class="review-text">${review.reviewText}</div>
-                            <div class="review-date">${new Date(review.timestamp).toLocaleDateString()}</div>
+                // Combine JSON reviews with Firebase reviews
+                const allReviews = [...jsonReviews, ...firebaseReviews];
+
+                if (allReviews.length === 0) {
+                    reviewsContainer.innerHTML = `
+                        <div class="no-reviews">
+                            No reviews yet. Be the first to review this host!
                         </div>
-                    `).join('');
+                    `;
+                } else {
+                    // Sort by timestamp (newest first), but JSON reviews without timestamps go to the end
+                    allReviews.sort((a, b) => {
+                        const aTime = a.timestamp || 0;
+                        const bTime = b.timestamp || 0;
+                        return bTime - aTime;
+                    });
                     
-                    container.innerHTML += firebaseReviewsHTML;
+                    reviewsContainer.innerHTML = allReviews.map(review => {
+                        const date = review.timestamp ? new Date(review.timestamp).toLocaleDateString() : '';
+                        return `
+                            <div class="review">
+                                <div class="review-header">
+                                    <span class="review-user">${escapeHtml(review.user)}</span>
+                                    <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)} ${review.rating}/5</span>
+                                </div>
+                                <div class="review-text">
+                                    ${escapeHtml(review.text).replace(/\n/g, '<br>')}
+                                </div>
+                                ${date ? `<div class="review-date">${date}</div>` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }, (error) => {
+                console.error('Error loading Firebase reviews:', error);
+                // Even if Firebase fails, show JSON reviews
+                const reviewsContainer = document.getElementById('reviewsContainer');
+                
+                if (jsonReviews.length === 0) {
+                    reviewsContainer.innerHTML = `
+                        <div class="no-reviews">
+                            Unable to load new reviews at this time. ${jsonReviews.length > 0 ? 'Showing existing reviews only.' : ''}
+                        </div>
+                    `;
+                } else {
+                    reviewsContainer.innerHTML = jsonReviews.map(review => {
+                        return `
+                            <div class="review">
+                                <div class="review-header">
+                                    <span class="review-user">${escapeHtml(review.user)}</span>
+                                    <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)} ${review.rating}/5</span>
+                                </div>
+                                <div class="review-text">
+                                    ${escapeHtml(review.text).replace(/\n/g, '<br>')}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
                 }
             });
-        }
-
-        function showError(message) {
-            document.getElementById('mainContent').innerHTML = `
-                <div class="error">
-                    <h2>${message}</h2>
-                    <p><a href="home.html" style="color: #8a2be2;">Return to home</a></p>
-                </div>
-            `;
-        }
-
-        // Make updateTotal global
-        window.updateTotal = function() {
-            const duration = document.getElementById('duration').value;
-            const memoryPackage = document.getElementById('memoryPackage').checked;
-            const insurance = document.getElementById('insurance').checked;
-
-            let total = pricingData[duration] || 0;
-            if (memoryPackage) total += 1500;
-            if (insurance) total += 499;
-
-            document.getElementById('totalCost').textContent = `$${total.toLocaleString()}`;
         };
 
-        // Load profile on page load
-        loadProfile();
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+
+    <script>
+        // ============================================
+        // CONFIGURATION - Automatically set from URL or use default
+        // ============================================
+        function getProfileIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Check if 'id' parameter exists (e.g., ?id=vanessa)
+            if (urlParams.has('id')) {
+                return urlParams.get('id');
+            }
+            
+            // Otherwise, get the first parameter key (e.g., ?vanessa)
+            const firstParam = Array.from(urlParams.keys())[0];
+            if (firstParam) {
+                return firstParam;
+            }
+            
+            // Default fallback
+            return 'maria';
+        }
+        
+        const PROFILE_ID = getProfileIdFromUrl();
+        console.log('Loading profile:', PROFILE_ID);
+        
+        // PROFILE DATA - Load from external source or URL parameter
+        let profileData = null;
+        
+        // Default profile data as fallback
+        function getDefaultProfileData() {
+            return {
+                'default': {
+                    name: "Sample Host",
+                    age: 25,
+                    height: "5'8\"",
+                    build: "Athletic",
+                    occupation: "Software Developer",
+                    relationshipStatus: "Single",
+                    sexualHistory: "2 Previous Relationships",
+                    wealth: "$75,000/year",
+                    personality: "Outgoing, Creative, Adventurous",
+                    libido: "High",
+                    responsiveness: "Very Responsive",
+                    skills: "Programming, Guitar, Rock Climbing",
+                    images: [
+                        "https://via.placeholder.com/300x400/4a0080/e0b3ff?text=Photo+1",
+                        "https://via.placeholder.com/300x400/6a00a0/e0b3ff?text=Photo+2",
+                        "https://via.placeholder.com/300x400/8a2be2/e0b3ff?text=Photo+3"
+                    ],
+                    prices: {
+                        "1": 299,
+                        "4": 999,
+                        "24": 1999,
+                        "168": 9999,
+                        "720": 29999
+                    },
+                    reviews: []
+                }
+            };
+        }
+
+        // Function to load profile data from JSON file or URL parameter
+        async function loadProfileData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const profileId = urlParams.get('id') || PROFILE_ID;
+            
+            try {
+                const response = await fetch(`https://raw.githubusercontent.com/augiea/possession.com/refs/heads/main/profile-data.json`);
+                if (!response.ok) throw new Error('Failed to fetch profile data');
+                const allProfiles = await response.json();
+                profileData = allProfiles[profileId] || allProfiles[PROFILE_ID];
+            } catch (error) {
+                console.log('Loading embedded profile data:', error.message);
+                profileData = getDefaultProfileData()[profileId] || getDefaultProfileData()['default'];
+            }
+            
+            renderProfile();
+            
+            // Load reviews from both JSON and Firebase
+            const jsonReviews = profileData.reviews || [];
+            if (typeof window.loadReviews === 'function') {
+                window.loadReviews(profileData.name, jsonReviews);
+            }
+        }
+
+        // Render profile with loaded data
+        function renderProfile() {
+            if (!profileData) return;
+
+            // Update gallery images
+            const galleryGrid = document.querySelector('.gallery-grid');
+            galleryGrid.innerHTML = profileData.images.map((img, i) => `
+                <div class="gallery-item">
+                    <img src="${img}" alt="Host Photo ${i + 1}" onerror="this.parentElement.innerHTML='<div class=\\'gallery-placeholder\\'>Image ${i + 1}<br>Not Available</div>'">
+                </div>
+            `).join('');
+
+            // Helper function to create profile item only if value exists
+            function createProfileItem(label, value) {
+                if (value === undefined || value === null || value === '') return '';
+                return `
+                    <div class="profile-item">
+                        <span class="profile-label">${label}:</span>
+                        <span class="profile-value">${value}</span>
+                    </div>
+                `;
+            }
+
+            // Update profile information
+            document.querySelector('.profile-grid').innerHTML = `
+                ${createProfileItem('Name', profileData.name)}
+                ${createProfileItem('Age', profileData.age ? `${profileData.age} Years` : null)}
+                ${createProfileItem('Height', profileData.height)}
+                ${createProfileItem('Weight', profileData.weight)}
+                ${createProfileItem('Breast Size', profileData.breastSize)}
+                ${createProfileItem('Occupation', profileData.occupation)}
+                ${createProfileItem('Relationship Status', profileData.relationshipStatus)}
+                ${createProfileItem('Sexual History', profileData.sexualHistory)}
+                ${createProfileItem('Wealth', profileData.wealth)}
+                ${createProfileItem('Personality', profileData.personality)}
+                ${createProfileItem('Libido', profileData.libido)}
+                ${createProfileItem('Responsiveness', profileData.responsiveness)}
+                ${createProfileItem('Memory Package Skills', profileData.skills)}
+            `;
+
+            updatePriceOptions();
+        }
+
+        function updatePriceOptions() {
+            const priceData = profileData.prices;
+            document.getElementById('duration').innerHTML = `
+                <option value="1">1 Hour - $${priceData['1'].toLocaleString()}</option>
+                <option value="4">4 Hours - $${priceData['4'].toLocaleString()}</option>
+                <option value="24">24 Hours - $${priceData['24'].toLocaleString()}</option>
+                <option value="168">1 Week - $${priceData['168'].toLocaleString()}</option>
+                <option value="720">1 Month - $${priceData['720'].toLocaleString()}</option>
+            `;
+            
+            prices.duration = priceData;
+            
+            updateTotal();
+        }
+
+        const prices = {
+            duration: {},
+            memories: 1500,
+            insurance: 499
+        };
+
+        function updateTotal() {
+            const duration = document.getElementById('duration').value;
+            const memories = document.getElementById('memories').checked;
+            const insurance = document.getElementById('insurance').checked;
+
+            let total = prices.duration[duration];
+            if (memories) total += prices.memories;
+            if (insurance) total += prices.insurance;
+
+            document.getElementById('totalCost').textContent = '$' + total.toLocaleString();
+        }
+
+        document.getElementById('duration').addEventListener('change', updateTotal);
+        document.getElementById('memories').addEventListener('change', updateTotal);
+        document.getElementById('insurance').addEventListener('change', updateTotal);
+
+        function initiateSession() {
+            const duration = document.getElementById('duration').value;
+            const time = document.getElementById('time').value;
+            const memories = document.getElementById('memories').checked;
+            const insurance = document.getElementById('insurance').checked;
+
+            const timeText = document.getElementById('time').options[document.getElementById('time').selectedIndex].text;
+
+            alert('🌀 Initiating possession sequence...\n\n' +
+                  'Host: ' + profileData.name + '\n' +
+                  'Duration: ' + document.getElementById('duration').options[document.getElementById('duration').selectedIndex].text + '\n' +
+                  'Start Time: ' + timeText + '\n' +
+                  'Memory Package: ' + (memories ? 'YES' : 'NO') + '\n' +
+                  'Insurance: ' + (insurance ? 'YES' : 'NO') + '\n\n' +
+                  'Connecting to host consciousness...\n' +
+                  'Please prepare for transfer.');
+        }
+
+        // Load profile data when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadProfileData);
+        } else {
+            loadProfileData();
+        }
     </script>
 </body>
 </html>
