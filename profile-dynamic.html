@@ -423,9 +423,10 @@
         function renderProfile(host, isLegacy = false) {
             document.title = `👻 Possession.com - ${host.name}`;
             
-            // Build profile info items dynamically
+            // Build profile info items dynamically - only show fields that exist
             let profileItems = '';
             
+            // Always show age
             if (host.age) {
                 profileItems += `
                     <div class="info-item">
@@ -435,6 +436,7 @@
                 `;
             }
             
+            // Physical attributes
             if (host.height) {
                 profileItems += `
                     <div class="info-item">
@@ -449,6 +451,15 @@
                     <div class="info-item">
                         <div class="info-label">Weight</div>
                         <div class="info-value">${host.weight}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.breastSize) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Breast Size</div>
+                        <div class="info-value">${host.breastSize}</div>
                     </div>
                 `;
             }
@@ -479,8 +490,73 @@
                     </div>
                 `;
             }
+            
+            // Lifestyle fields
+            if (host.occupation) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Occupation</div>
+                        <div class="info-value">${host.occupation}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.relationshipStatus) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Relationship Status</div>
+                        <div class="info-value">${host.relationshipStatus}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.wealth) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Wealth</div>
+                        <div class="info-value">${host.wealth}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.sexualHistory) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Sexual History</div>
+                        <div class="info-value">${host.sexualHistory}</div>
+                    </div>
+                `;
+            }
+            
+            // Personality traits
+            if (host.libido) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Libido</div>
+                        <div class="info-value">${host.libido}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.responsiveness) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Responsiveness</div>
+                        <div class="info-value">${host.responsiveness}</div>
+                    </div>
+                `;
+            }
+            
+            if (host.skills) {
+                profileItems += `
+                    <div class="info-item">
+                        <div class="info-label">Memory Package Skills</div>
+                        <div class="info-value">${host.skills}</div>
+                    </div>
+                `;
+            }
 
-            // Rating
+            // Always show rating
             const rating = isLegacy ? (host.rating || 5.0) : (host.reviews[0]?.rating || 5.0);
             profileItems += `
                 <div class="info-item">
@@ -488,18 +564,30 @@
                     <div class="info-value">⭐ ${rating}</div>
                 </div>
             `;
+            
+            // Add personality description if it exists (separate from grid)
+            let personalitySection = '';
+            if (host.personality) {
+                personalitySection = `
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(30, 30, 50, 0.6); border-radius: 8px; border: 1px solid rgba(138, 43, 226, 0.3);">
+                        <div class="info-label" style="margin-bottom: 10px;">Personality</div>
+                        <div style="color: #d0d0d0; line-height: 1.6;">${host.personality}</div>
+                    </div>
+                `;
+            }
 
             // Set pricing data for calculator
             if (isLegacy) {
                 // Legacy format: { "1 Hour": 299, "3 Hours": 799, ... }
                 pricingData = host.pricing || {};
             } else {
-                // Firebase format: { "1": 299, "3": 799, "24": 2499, "168": 14999 }
+                // Firebase format: { "1": 299, "4": 899, "24": 2499, "168": 14999, "720": 29999 }
                 pricingData = {
                     "1 Hour": host.prices['1'] || 0,
-                    "3 Hours": host.prices['3'] || 0,
+                    "4 Hours": host.prices['4'] || 0,
                     "24 Hours": host.prices['24'] || 0,
-                    "1 Week": host.prices['168'] || 0
+                    "1 Week": host.prices['168'] || 0,
+                    "1 Month": host.prices['720'] || 0
                 };
             }
 
@@ -508,7 +596,8 @@
             const reviews = isLegacy ? (host.reviews || []) : (host.reviews || []);
             
             reviews.forEach(review => {
-                const author = review.author || review.reviewerName || 'Anonymous';
+                // Firebase format uses 'user', legacy uses 'author'
+                const author = review.user || review.author || 'Anonymous';
                 const text = review.text || review.reviewText || '';
                 const reviewRating = review.rating || 5;
                 const timestamp = review.timestamp || review.date || Date.now();
@@ -538,6 +627,7 @@
                     <div class="profile-info">
                         ${profileItems}
                     </div>
+                    ${personalitySection}
                 </section>
 
                 <section>
