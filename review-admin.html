@@ -516,11 +516,11 @@ let allSessions = {};
 onAuthStateChanged(auth, user => {
     if (user) {
         document.getElementById('authWrap').style.display  = 'none';
-        document.getElementById('adminWrap').style.display = '';
-        document.getElementById('logoutBtn').style.display = '';
+        document.getElementById('adminWrap').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'block';
         loadAll();
     } else {
-        document.getElementById('authWrap').style.display  = '';
+        document.getElementById('authWrap').style.display  = 'flex';
         document.getElementById('adminWrap').style.display = 'none';
         document.getElementById('logoutBtn').style.display = 'none';
     }
